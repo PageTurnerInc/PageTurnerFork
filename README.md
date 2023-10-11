@@ -18,21 +18,13 @@ Saat ini, tingkat kesadaran literasi masyarakat Indonesia masih memprihatinkan. 
 
 Kombinasi dari kurangnya ketertarikan karena salah pilih genre dan kendala aksesibilitas membentuk tantangan yang signifikan dalam upaya meningkatkan literasi. Inilah tempat dimana PageTurner dapat berperan. Dengan sistem rekomendasi buku yang cerdas, aplikasi ini dapat membantu masyarakat menemukan buku-buku yang sesuai dengan minat mereka, sehingga memotivasi mereka untuk membaca lebih banyak lagi. Selain itu, PageTurner menyediakan akses mudah ke berbagai jenis buku, mengatasi kendala aksesibilitas yang mungkin dihadapi oleh beberapa individu.
 
-## Modul
+## Daftar Modul
 
-- Rekomendasi Buku (Salsa)
+- Rak Buku (Salsa)
 
-Rekomendasi Berdasarkan Riwayat Pembelian: Platform akan menganalisis riwayat pembelian pengguna untuk memberikan rekomendasi buku yang sesuai dengan minat mereka.
+User dapat membuat list buku yang disukai.
 
-Rekomendasi Berdasarkan Genre: Pengguna dapat memilih genre buku yang mereka minati, dan sistem akan menyarankan buku dalam genre tersebut.
-
-Rekomendasi Berdasarkan Rating dan Ulasan: Pengguna dapat melihat rekomendasi berdasarkan rating dan ulasan dari pengguna lain.
-
-User dapat menambahkan buku ke daftar buku
-
-User dapat menghapus buku yang telah ditambahkan ke daftar buku
-
-User dapat memberikan "like" atau menandai buku yang mereka sukai untuk menunjukkan minat mereka terhadap buku-buku tersebut.
+User lain dapat melihat rak buku yang dibuat user lainnya.
 
 - Wishlist (Dinda)
 
@@ -59,3 +51,17 @@ User dapat menghapus dan mengubah buku yang telah ditambahkan ke daftar buku
 - Daftar Belanja (Najmi)
 
 Pengguna dapat menambahkan buku ke keranjang belanja mereka. Mereka dapat melihat dan mengelola isi keranjang belanja sebelum melakukan pembayaran.
+
+## User Role
+
+- Guest
+
+    Fitur yang bisa diakses: Katalalog Buku
+
+- Logged in User
+
+    Fitur yang bisa diakses: Katalalog Buku, Daftar Belanja, Review, Rak buku
+
+- Premium Account
+
+    Fitur yang bisa diakses: Katalog Buku, Daftar Belanja, Review, Rekomendasi Buku, Wishlist, Rak buku
