@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>Welcome {{ user.username }} </h1>
+
+    {% if account.get_is_premium %}
+        <h2>Premium Account</h2>
+
+    {% elif not account.get_is_premium %}
+        <h2>Regular Account</h2>
+
+    {% endif %}
+
+    <p>Fullname: {{ account.full_name }}</p>
+    <p>Email: {{ account.email }}</p>
+{% endblock content %}
