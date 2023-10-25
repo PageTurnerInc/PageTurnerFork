@@ -9,9 +9,9 @@ class Account(models.Model):
     is_premium = models.CharField(max_length=3)
 
     def get_is_premium(self):
-        if self.is_premium == "Yes":
+        if self.is_premium == "Y":
             return True
-        elif self.is_premium == "No":
+        elif self.is_premium == "N":
             return False
 
     def __str__(self):

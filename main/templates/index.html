@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-    <h1>Welcome {{ user.username }} </h1>
+    <h1>Welcome {{ user }} </h1>
 
     {% if account.get_is_premium %}
         <h2>Premium Account</h2>

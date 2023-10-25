@@ -7,10 +7,11 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from main.forms import CreateAccountForm
 from django.contrib.auth.decorators import login_required
+import datetime
 
 @login_required(login_url='/login')
 def index(request):
-    account = Account.objects.filter(user=request.user)
+    account = Account.objects.get(user=request.user)
 
     context = {
         'user': request.user.username,
@@ -28,6 +29,7 @@ def login_user(request):
         if user is not None:
             login(request, user)
             response = HttpResponseRedirect(reverse("main:index"))
+            response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
         else:
             messages.info(request, 'Invalid username/password!')
@@ -38,6 +40,7 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     response = redirect('main:index')
+    response.delete_cookie('last_login')
     return response
 
 def create_account(request):
