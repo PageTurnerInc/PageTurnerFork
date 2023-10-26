@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'wishlist',
     'main',
+    'book',
+    'isbn_field',
 ]
 
 MIDDLEWARE = [
