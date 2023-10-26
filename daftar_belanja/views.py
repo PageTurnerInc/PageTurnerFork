@@ -1,6 +1,6 @@
 from main.models import Account
 from book.models import Book
-from daftar_belanja.models import ShoppingCart
+from daftar_belanja.models import *
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
@@ -37,8 +37,9 @@ def shopping_cart(request):
 
 def buy_book(request, book_id):
     account = Account.objects.get(user=request.user)
-    book = Book.objects.get(id=book_id)
     cart, created = ShoppingCart.objects.get_or_create(account=account)
+
+    book = Book.objects.get(id=book_id)
     cart.cart.add(book)
 
     return redirect('daftar_belanja:add_book')
