@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>PageTurner</title>
+{% endblock meta %}
+
+{% block content %}
+<div class="container mx-3">
+    
+    <h1>Page buku {{ book.book_title }}</h1>
+
+    {% if delete == True %}
+        <a href="{% url 'katalog_buku:delete_book_katalog' book.id %}">
+            <button>Delete Book</button>
+        </a>
+    {% endif %}
+
+</div>
+{% endblock content %}
