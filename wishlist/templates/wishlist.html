@@ -9,33 +9,41 @@
         margin: 0;
         padding: 0;
         height: 100vh;
-
     }
 
-    .container {
-        background-color: rgb(255, 253, 253);
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        margin-top: 100px; /* Menambahkan jarak antara navbar dan container */
+    .navbar {
+        margin-bottom: 90px; /* Menambahkan jarak antara navbar dan konten */
     }
 
     .footer {
-        background-color:#8a4a00;
+        background-color: #8a4a00;
         color: white;
         padding: 10px;
         text-align: center;
         position: fixed;
         bottom: 0;
         width: 100%;
+        margin-top: 20px; /* Ubah nilai margin-top sesuai kebutuhan Anda */
     }
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px; /* Jarak antara cards */
+        justify-content: center; /* Kartu akan ditengah pada baris */
+    }
+
+    .card-item {
+        width: calc(30% - 20px); /* Mengatur lebar card agar tiga kartu ditampilkan per baris */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+    }
+    
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #8a4a00;">
-
-        <a class="navbar-brand" href="#">Wishlist</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">{{ request.user }} 's Wishlist</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -43,38 +51,56 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
             </ul>
         </div>
 
 </nav>
 
-<div class="container">
-    <h1>{{ user }}'s Wishlist</h1>
-    <div class="row">
-        {% for book in wishlist %}
+<div id="wishlist-items" class="row justify-content-center">
+</div>
+
+
+<script>
+    async function getWishlistItems() {
+        return fetch("{% url 'wishlist:get_wishlist_items' %}").then((res) => res.json());
+    }
+
+    async function refreshWishlist() {
+    const cardContainer = document.getElementById("wishlist-items");
+    cardContainer.innerHTML = "";
+
+    const books = await getWishlistItems();
+
+    books.forEach((book) => {
+        cardContainer.innerHTML += `
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <img src="{{ book.cover_image.url }}" class="card-img-top" alt="{{ book.title }}">
+                    <img src="${book.fields.image_url_s}" class="card-img-top" alt="${book.fields.book_title}">
                     <div class="card-body">
-                        <h5 class="card-title">{{ book.title }}</h5>
-                        <p class="card-text">{{ book.author }}</p>
-                        <p class="card-text">Price: ${{ book.price }}</p>
-                        <form method="POST" action="{% url 'wishlist:delete_book' book.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
+                        <h5 class="card-title">${book.fields.book_title}</h5>
+                        <p class="card-text">Author: ${book.fields.book_author}</p>
+                        <p class="card-text">Year of Publication: ${book.fields.year_of_publication}</p>
+                        <p class="card-text">Publisher: ${book.fields.publisher}</p>
+                        <button class="btn btn-danger" onclick="deleteItem(${book.pk})">Delete</button>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
-</div>
+            </div>`;
+    });
+}
+
+
+    function deleteItem(bookId) {
+        fetch(`{% url 'wishlist:delete_book' 0 %}`.replace("0", bookId), {
+            method: "POST"
+        }).then(refreshWishlist);
+    }
+
+    // Panggil fungsi untuk memuat wishlist saat halaman dimuat
+    $(document).ready(function () {
+        refreshWishlist();
+    });
+</script>
+
 
 <div class="footer">
     &copy; 2023 Your Company. All rights reserved.
