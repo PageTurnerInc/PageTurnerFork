@@ -14,4 +14,18 @@
 
     <p>Fullname: {{ account.full_name }}</p>
     <p>Email: {{ account.email }}</p>
+
+    <a class="nav-link active" aria-current="page" href="{% url 'daftar_belanja:add_book' %}">
+        <button>
+            Book Catalogue
+        </button>
+    </a>
+
+    <br>
+
+    <a class="nav-link active" aria-current="page" href="{% url 'main:logout_user' %}">
+        <button class="logout">
+            Logout
+        </button>
+    </a>
 {% endblock content %}
