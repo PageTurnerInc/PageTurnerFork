@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import json
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
@@ -117,3 +118,8 @@ def update_review_ajax(request, review_id):
         else:
             return HttpResponse("Unauthorized", status=401)
     return HttpResponseNotFound()
+=======
+from django.shortcuts import render
+
+# Create your views here.
+>>>>>>> 7a6ba13584b15d0560488ca72defa19d3938f34f
