@@ -1,9 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseNotFound
 from django.core import serializers
 
 from book.models import Book
+from rak_buku.models import Rak
+from main.models import Account
+
 
 def show_katalog(request):
     books = Book.objects.all()
@@ -16,6 +19,8 @@ def show_katalog(request):
 
 def show_book_page(request, id):
     book = Book.objects.get(pk=id)
+    user = Account.objects.get(user=request.user)
+    user_rak = Rak.objects.filter(user=user)
     
     delete = False
     if request.user == book.user:
@@ -24,6 +29,7 @@ def show_book_page(request, id):
     context = {
         'book': book,
         'delete': delete,
+        'user_rak': user_rak,
     }
 
     return render(request, "book_page.html", context)
@@ -62,3 +68,11 @@ def delete_book_katalog(request, id):
 def get_product_json(request):
     books = Book.objects.all()
     return HttpResponse(serializers.serialize('json', books))
+
+def add_book_to_rak(request, id, rak_id):
+    book = Book.objects.get(pk=id)
+    rak = Rak.objects.get(pk=rak_id)
+    rak.books.add(book)
+
+    # Redirect to the show_book_page view
+    return HttpResponse(b"CREATED", status=201)

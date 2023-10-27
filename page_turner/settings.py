@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'book',
-    'daftar_belanja',
     'isbn_field',
+    'rak_buku',
+    'daftar_belanja',
     'katalog_buku',
 ]
 

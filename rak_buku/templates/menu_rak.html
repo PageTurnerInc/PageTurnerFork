@@ -1,0 +1,116 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  </head>
+
+<body>
+
+<div class="mb-3" style="padding: 40px;">
+
+  <div class="d-flex mb-3 gap-3">
+    <h1>Rak Buku Anda</h1>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Tambah Rak Buku</button>
+
+</div>
+<div class="d-flex flex-row gap-3" id="list_rak">
+  
+</div>
+<hr>
+      <h1>Rekomendasi Rak Buku</h1>
+      <div class="d-flex mb-3 gap-3">
+{% for rak in all_rak %}
+<div class="card p-0" style="width: 12rem;">
+             
+<img src="{% static 'img/no-image.jpg' %}" class="card-img-top" alt="...">
+<div class="card-footer">{{ rak.name }}</div>
+</div>
+{% endfor %}
+
+</div>
+
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Rak Buku</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <form id="form" onsubmit="return false;">
+                      {% csrf_token %}
+                      <div class="mb-3">
+                          <label for="name" class="col-form-label">Name:</label>
+                          <input type="text" class="form-control" id="name" name="name"></input>
+                      </div>
+                      <div class="mb-3">
+                          <label for="description" class="col-form-label">Description:</label>
+                          <textarea class="form-control" id="description" name="description"></textarea>
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Tambah Rak Buku</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+  <script>
+    async function getRak() {
+        return fetch("{% url 'rak_buku:get_rak_json' %}").then((res) => res.json());
+    }
+
+    async function refreshRak() {
+        document.getElementById("list_rak").innerHTML = ""
+        const rak = await getRak();
+        let htmlString = ``;
+        rak.forEach((item) => {
+            htmlString += `
+            <a href="${item.pk}" style="text-decoration: none; color: inherit">
+            <div class="card p-0" style="width: 12rem;">
+             
+             <img src="{% static 'img/no-image.jpg' %}" class="card-img-top" alt="...">
+             <div class="card-footer">${item.fields.name}</div>
+             </div>
+             </a>
+             `;
+        });
+        document.getElementById("list_rak").innerHTML = htmlString;
+    }
+
+    refreshRak();
+
+    function addRak() {
+        fetch("{% url 'rak_buku:add_rak_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshRak)
+
+        document.getElementById("form").reset()
+        return false
+    }
+
+    document.getElementById("button_add").onclick = addRak
+    
+</script>
+</body>
+
+</html>
