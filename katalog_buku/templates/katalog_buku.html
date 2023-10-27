@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Katalog - PageTurner</title>
+
+    <script>
+        function addProduct() {
+            fetch("{% url 'katalog_buku:add_book_katalog' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshProducts)
+    
+            document.getElementById("form").reset()
+            return false
+        }
+
+        async function getProducts() {
+            return fetch("{% url 'katalog_buku:get_product_json' %}").then((res) => res.json())
+        }
+
+        async function refreshProducts() {
+            document.getElementById("book-cards").innerHTML = ""
+            const products = await getProducts()
+            let htmlString = ""
+            products.forEach((item) => {
+                htmlString += `<a href="book/${ item.pk }" style="text-decoration: none;">
+                    <div class="card my-3">
+                        <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                            <p>${ item.fields.book_title }</p>
+                            <footer class="blockquote-footer">${ item.fields.book_author }</footer>
+                        </blockquote>
+                        </div>
+                    </div>
+                </a>`
+            })
+            
+            document.getElementById("book-cards").innerHTML = htmlString
+        }
+
+        refreshProducts()
+        
+    </script>
+{% endblock meta %}
+
+{% block content %}
+<div class="container mx-3">
+    <h1>Katalog Buku</h1>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product by AJAX</button>
+
+    <div class="book-cards" id="book-cards">
+        {% for book in books %}
+            <a href="{% url 'katalog_buku:show_book' book.id %}" style="text-decoration: none;">
+                <div class="card my-3">
+                    <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>{{ book.book_title }}</p>
+                        <footer class="blockquote-footer">{{ book.book_author }}</footer>
+                    </blockquote>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="isbn" class="col-form-label">ISBN:</label>
+                            <input type="number" class="form-control" id="isbn" name="isbn"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="title" class="col-form-label">Title:</label>
+                            <input type="text" class="form-control" id="title" name="title"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="author" class="col-form-label">Author:</label>
+                            <input type="text" class="form-control" id="author" name="author"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="year" class="col-form-label">Publication Year:</label>
+                            <input type="number" class="form-control" id="year" name="year"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="publisher" class="col-form-label">Publisher:</label>
+                            <input type="text" class="form-control" id="publisher" name="publisher"></input>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.getElementById("button_add").onclick = addProduct
+</script>
+{% endblock content %}
