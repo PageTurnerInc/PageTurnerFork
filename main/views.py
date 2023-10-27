@@ -12,26 +12,6 @@ import datetime
 
 from book.models import Book
 
-@login_required(login_url='/login')
-def index(request):
-    account = Account.objects.get(user=request.user)
-
-    context = {
-        'user': request.user.username,
-        'account': account,
-    }
-
-    return render(request, 'index.html', context)
-
-def landing(request):
-    books = Book.objects.all()[:3]
-
-    context = {
-        'books': books,
-    }
-
-    return render(request, "landing.html", context)
-
 def login_user(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -46,9 +26,15 @@ def login_user(request):
         else:
             messages.info(request, 'Invalid username/password!')
             
-    context = {}
+    books = [Book.objects.get(id=1), Book.objects.get(id=2), Book.objects.get(id=5)]
+
+    context = {
+        'books': books,
+    }
+
     return render(request, 'login.html', context)
 
+@login_required(login_url='')
 def logout_user(request):
     logout(request)
     response = redirect('main:index')
