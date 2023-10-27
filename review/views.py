@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import json
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
