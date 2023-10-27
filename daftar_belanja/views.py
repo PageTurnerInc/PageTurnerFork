@@ -52,7 +52,7 @@ def owned_books(request):
     return render(request, 'owned_books.html', context)
 
 @csrf_exempt
-def add_to_cart(request):
+def add_to_cart_ajax(request):
     if request.method == 'POST':
         pk = json.loads(request.body).get('pk')
         account = Account.objects.get(user=request.user)
@@ -63,6 +63,20 @@ def add_to_cart(request):
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
+
+def add_to_cart(request, id):
+    account = Account.objects.get(user=request.user)
+    cart, created = ShoppingCart.objects.get_or_create(account=account)
+    book = Book.objects.get(pk=id)
+    books = Book.objects.all()
+
+    context = {
+        'books': books,
+    }
+
+    cart.cart.add(book)
+    return render(request, 'katalog_buku.html', context)
+
 
 def get_shopping_cart(request):
     account = Account.objects.get(user=request.user)
