@@ -15,34 +15,65 @@
     <p>Fullname: {{ account.full_name }}</p>
     <p>Email: {{ account.email }}</p>
 
-    <table>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>ISBN</th>
-            <th>Publisher</th>
-            <th>Add Book</th>
-        </tr>
-        {% for book in books %}
-            <tr>
-                <td>{{book.book_title}}</td>
-                <td>{{book.book_author}}</td>
-                <td>{{book.isbn}}</td>
-                <td>{{book.year_of_publication}}</td>
-                <td>
-                    <a class="nav-link active" aria-current="page" href="{% url 'daftar_belanja:buy_book' book_id=book.pk %}">
-                        <button>
-                            Put in shopping cart
-                        </button>
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-
     <a class="nav-link active" aria-current="page" href="{% url 'daftar_belanja:shopping_cart' %}">
-        <button>
+        <button type="button" class="btn btn-primary" id="button_add">
             Look at my shopping cart
         </button>
     </a>
+
+    <table id="book_catalogue" class="book_catalogue"></table>
+
+    <br>
+
+    <script>
+        async function getBooks() {
+            return fetch("{% url 'book:get_books' %}").then((res) => res.json())
+        }
+
+        async function refreshTable() {
+            const books = await getBooks()
+            const bookCatalogue = document.getElementById("book_catalogue")
+
+            bookCatalogue.innerHTML = "";
+
+            let htmlString = `
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>Publisher</th>
+                <th>Add Book</th>
+            </tr>`
+
+            books.forEach((item) => {
+                htmlString += `
+                \n<tr>
+                    <td>${item.fields.book_title}</td>
+                    <td>${item.fields.book_author}</td>
+                    <td>${item.fields.isbn}</td>
+                    <td>${item.fields.year_of_publication}</td>
+                    <td>
+                        <a>
+                            <button type="button" class="btn btn-primary" id="button_add" onclick="addToCart(${item.pk})">
+                                Put in shopping cart
+                            </button>
+                        </a>
+                    </td>
+                </tr>`
+            })
+
+            document.getElementById("book_catalogue").innerHTML = htmlString
+        }
+
+        refreshTable();
+
+        function addToCart(pk) {
+            fetch("{% url 'daftar_belanja:add_to_cart' %}", {
+                method: 'POST',
+                body: JSON.stringify({
+                    'pk': pk
+                })
+            }).then(refreshTable)
+        }
+    </script>
 {% endblock content %}
