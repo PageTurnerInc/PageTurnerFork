@@ -1,4 +1,8 @@
 from main.models import Account
+<<<<<<< HEAD
+=======
+from daftar_belanja.models import ShoppingCart
+>>>>>>> c910354369d0a90573201f72a1a5bee7c30b8bd4
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
@@ -56,8 +60,16 @@ def create_account(request):
                 email = new_user.email,
                 is_premium = new_user.is_premium,
                 )
+<<<<<<< HEAD
             messages.success(request, 'Sign up successful!')
             return redirect('main:login_user')
     
     context = {'form':form}
+=======
+            
+            messages.success(request, 'Sign up successful!')
+            return redirect('main:login_user')
+    
+    context = {'form': form}
+>>>>>>> c910354369d0a90573201f72a1a5bee7c30b8bd4
     return render(request, 'create_account.html', context)

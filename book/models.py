@@ -1,5 +1,9 @@
 from django.db import models
 from isbn_field import ISBNField
+<<<<<<< HEAD
+=======
+from django.contrib.auth.models import User
+>>>>>>> c910354369d0a90573201f72a1a5bee7c30b8bd4
 
 class Book(models.Model):
     isbn = ISBNField()
@@ -10,3 +14,7 @@ class Book(models.Model):
     image_url_s = models.TextField(null=True, blank=True)
     image_url_m = models.TextField(null=True, blank=True)
     image_url_l = models.TextField(null=True, blank=True)
+<<<<<<< HEAD
+=======
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+>>>>>>> c910354369d0a90573201f72a1a5bee7c30b8bd4

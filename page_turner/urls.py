@@ -21,5 +21,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
     path("api/books/", include("book.urls")),
+<<<<<<< HEAD
     path("rak_buku/", include("rak_buku.urls"))
+=======
+    path('katalog/', include("katalog_buku.urls")),
+    path('daftar_belanja/', include('daftar_belanja.urls')),
+>>>>>>> c910354369d0a90573201f72a1a5bee7c30b8bd4
 ]

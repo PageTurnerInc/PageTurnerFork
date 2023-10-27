@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>Welcome {{ user }} </h1>
+
+    {% if account.get_is_premium %}
+        <h2>Premium Account</h2>
+
+    {% elif not account.get_is_premium %}
+        <h2>Regular Account</h2>
+
+    {% endif %}
+
+    <p>Fullname: {{ account.full_name }}</p>
+    <p>Email: {{ account.email }}</p>
+
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Publisher</th>
+            <th>Add Book</th>
+        </tr>
+        {% for book in books %}
+            <tr>
+                <td>{{book.book_title}}</td>
+                <td>{{book.book_author}}</td>
+                <td>{{book.isbn}}</td>
+                <td>{{book.year_of_publication}}</td>
+                <td>
+                    <a class="nav-link active" aria-current="page" href="{% url 'daftar_belanja:buy_book' book_id=book.pk %}">
+                        <button>
+                            Put in shopping cart
+                        </button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <a class="nav-link active" aria-current="page" href="{% url 'daftar_belanja:shopping_cart' %}">
+        <button>
+            Look at my shopping cart
+        </button>
+    </a>
+{% endblock content %}
