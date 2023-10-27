@@ -39,14 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'book',
-<<<<<<< HEAD
     'isbn_field',
     'rak_buku',
-=======
     'daftar_belanja',
-    'isbn_field',
     'katalog_buku',
->>>>>>> c910354369d0a90573201f72a1a5bee7c30b8bd4
 ]
 
 MIDDLEWARE = [

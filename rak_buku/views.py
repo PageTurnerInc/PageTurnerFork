@@ -43,7 +43,7 @@ def show_json_by_id(request, id):
 
 def show_rak_by_id(request, id):
     rak = Rak.objects.get(pk=id)
-    books_in_rak = rak.books.all()  # Mendapatkan semua buku dalam rak ini
+    books_in_rak = rak.books.all()
 
     context = {
         'name': rak.name,
@@ -54,34 +54,14 @@ def show_rak_by_id(request, id):
 
     return render(request, "rak_buku.html", context)
 
-def add_book_to_rak(request, rak_id, book_id):
-    rak = Rak.objects.get(pk=rak_id)
-    book = Book.objects.get(pk=book_id)
-
-    # Menambahkan buku ke rak
-    rak.books.add(book)
-
-    return redirect('rak_buku:show_rak_by_id', id=rak_id)
-
 def get_rak_json(request):
     user = Account.objects.get(user=request.user)
     user_rak = Rak.objects.filter(user=user)  # Filter Rak objects by the associated Account
     return HttpResponse(serializers.serialize('json', user_rak))
 
-@csrf_exempt
-def add_rak_ajax(request):
-    if request.method == 'POST':
-        name = request.POST.get("name")
-        description = request.POST.get("description")
-        user = Account.objects.get(user=request.user)
-
-        new_rak = Rak(name=name, description=description, user=user)
-        new_rak.save()
-
-        return HttpResponse(b"CREATED", status=201)
-
-    return HttpResponseNotFound()
-
+def get_rak_json_by_id(request, id):
+    rak = Rak.objects.filter(pk=id)  # Filter Rak objects by the associated Account
+    return HttpResponse(serializers.serialize('json', rak))
 
 @csrf_exempt
 def add_rak_ajax(request):
