@@ -10,6 +10,7 @@ class Rak(models.Model):
     user = models.ForeignKey(Account, on_delete=models.CASCADE) 
     books = models.ManyToManyField(Book)
 
+
 class RakForm(ModelForm):
     class Meta:
         model = Rak
