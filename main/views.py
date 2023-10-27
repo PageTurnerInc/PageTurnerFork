@@ -10,6 +10,8 @@ from main.forms import CreateAccountForm
 from django.contrib.auth.decorators import login_required
 import datetime
 
+from book.models import Book
+
 @login_required(login_url='/login')
 def index(request):
     account = Account.objects.get(user=request.user)
@@ -20,6 +22,15 @@ def index(request):
     }
 
     return render(request, 'index.html', context)
+
+def landing(request):
+    books = Book.objects.all()[:3]
+
+    context = {
+        'books': books,
+    }
+
+    return render(request, "landing.html", context)
 
 def login_user(request):
     if request.method == 'POST':
