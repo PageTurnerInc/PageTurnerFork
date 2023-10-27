@@ -10,16 +10,7 @@ from main.forms import CreateAccountForm
 from django.contrib.auth.decorators import login_required
 import datetime
 
-@login_required(login_url='/login')
-def index(request):
-    account = Account.objects.get(user=request.user)
-
-    context = {
-        'user': request.user.username,
-        'account': account,
-    }
-
-    return render(request, 'index.html', context)
+from book.models import Book
 
 def login_user(request):
     if request.method == 'POST':
@@ -35,9 +26,15 @@ def login_user(request):
         else:
             messages.info(request, 'Invalid username/password!')
             
-    context = {}
+    books = [Book.objects.get(id=1), Book.objects.get(id=2), Book.objects.get(id=5)]
+
+    context = {
+        'books': books,
+    }
+
     return render(request, 'login.html', context)
 
+@login_required(login_url='')
 def logout_user(request):
     logout(request)
     response = redirect('main:index')
