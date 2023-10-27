@@ -8,15 +8,18 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.http import JsonResponse
 import json
 
 @login_required(login_url='/login')
 def add_book(request):
     account = Account.objects.get(user=request.user)
+    cart, created = ShoppingCart.objects.get_or_create(account=account)
 
     context = {
         'user': request.user.username,
         'account': account,
+        'cart': cart,
         'books': Book.objects.all(),
     }
 
@@ -95,3 +98,16 @@ def confirm_payment(request):
         return HttpResponse(b"CREATED", status=201)
     
     return HttpResponseNotFound()
+
+@csrf_exempt
+def check_book_ownership(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk') 
+
+        account = Account.objects.get(user=request.user)
+        book = Book.objects.get(pk=pk)
+        cart, created = ShoppingCart.objects.get_or_create(account=account)
+        is_owned = cart.owned_books.filter(pk=book.pk).exists()
+
+        data = {'is_owned': is_owned}
+        return JsonResponse(data)
