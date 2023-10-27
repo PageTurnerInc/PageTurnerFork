@@ -23,7 +23,8 @@
             const products = await getProducts()
             let htmlString = ""
             products.forEach((item) => {
-                htmlString += `<a href="book/${ item.pk }" style="text-decoration: none;">
+                htmlString += `
+                <a href="book/${ item.pk }" style="text-decoration: none;">
                     <div class="card my-3">
                         <div class="card-body">
                         <blockquote class="blockquote mb-0">
@@ -32,14 +33,23 @@
                         </blockquote>
                         </div>
                     </div>
-                </a>`
+                </a>
+                `
             })
             
             document.getElementById("book-cards").innerHTML = htmlString
         }
 
         refreshProducts()
-        
+
+        function addToCart(pk) {
+            fetch("{% url 'daftar_belanja:add_to_cart' %}", {
+                method: 'POST',
+                body: JSON.stringify({
+                    'pk': pk
+                })
+            }).then(refreshTable)
+        }
     </script>
 {% endblock meta %}
 
