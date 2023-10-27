@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'main',
     'book',
     'isbn_field',
+    'review',
 ]
 
 MIDDLEWARE = [
