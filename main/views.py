@@ -20,13 +20,13 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            response = HttpResponseRedirect(reverse("main:index"))
+            response = HttpResponseRedirect(reverse("katalog_buku:show_katalog"))
             response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
         else:
             messages.info(request, 'Invalid username/password!')
             
-    books = [Book.objects.get(id=1), Book.objects.get(id=2), Book.objects.get(id=5)]
+    books = [Book.objects.get(id=1), Book.objects.get(id=2), Book.objects.get(id=100)]
 
     context = {
         'books': books,
@@ -37,7 +37,7 @@ def login_user(request):
 @login_required(login_url='')
 def logout_user(request):
     logout(request)
-    response = redirect('main:index')
+    response = redirect('main:login_user')
     response.delete_cookie('last_login')
     return response
 
