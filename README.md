@@ -1,4 +1,4 @@
-# PageTurner - Kelompok C06 PBP
+# PageTurner - Kelompok C-06 PBP
 
 ## Anggota Kelompok:
 
