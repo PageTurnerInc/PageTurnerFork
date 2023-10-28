@@ -15,12 +15,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ShoppingCart',
+            name='Rak',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('account', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='main.account')),
-                ('cart', models.ManyToManyField(related_name='cart', to='book.book')),
-                ('owned_books', models.ManyToManyField(related_name='owned_books', to='book.book')),
+                ('name', models.CharField(max_length=16)),
+                ('description', models.TextField()),
+                ('books', models.ManyToManyField(to='book.book')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='main.account')),
             ],
         ),
     ]

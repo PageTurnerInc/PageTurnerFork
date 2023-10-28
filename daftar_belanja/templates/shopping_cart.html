@@ -15,26 +15,133 @@
 <p>Fullname: {{ account.full_name }}</p>
 <p>Email: {{ account.email }}</p>
 
-<table>
-    <tr>
-        <th>Title</th>
-        <th>Author</th>
-        <th>ISBN</th>
-        <th>Publisher</th>
-    </tr>
-    {% for book in cart %}
-        <tr>
-            <td>{{book.book_title}}</td>
-            <td>{{book.book_author}}</td>
-            <td>{{book.isbn}}</td>
-            <td>{{book.year_of_publication}}</td>
-        </tr>
-    {% endfor %}
-</table>
+<a class="nav-link active" aria-current="page" href="{% url 'daftar_belanja:owned_books' %}">
+    <button type="button" class="btn btn-primary" id="button_add">
+        Owned Books
+    </button>
+</a>
 
-<a class="nav-link active" aria-current="page" href="{% url 'daftar_belanja:add_book' %}">
-    <button>
+<br>
+
+<a class="nav-link active" aria-current="page" href="{% url 'katalog_buku:show_katalog' %}">
+    <button type="button" class="btn btn-primary" id="button_add">
         Go Back to Catalogue
     </button>
 </a>
+
+<br>
+
+<table id="shopping_cart" class="shopping_cart"></table>
+
+<br>
+
+<div class="modal fade" id="checkout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Checkout Cart</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <p>Please confirm your receipt</p>
+                    </div>
+                    <div class="mb-3">
+                        <table class="mb-3">
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>ISBN</th>
+                            </tr>
+                            {% for book in cart %}
+                                <tr>
+                                    <td>{{book.book_title}}</td>
+                                    <td>{{book.book_author}}</td>
+                                    <td>{{book.isbn}}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="mb-3">
+                        <label for="payment-method" class="col-form-label">Payment Method:</label>
+                        <select class="form-control" id="payment-method" name="payment-method">
+                            <option value="Debit Card">Debit Card</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="GoPay">GoPay</option>
+                            <option value="OVO">OVO</option>
+                            <option value="PayPal">Paypal</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal" onclick="confirmPayment()">Confirm Payment</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkout">Checkout Cart</button>
+
+<script>
+    async function getShoppingCart() {
+        return fetch("{% url 'daftar_belanja:get_shopping_cart' %}").then((res) => res.json())
+    }
+
+    async function refreshTable() {
+        const books = await getShoppingCart()
+        const bookCatalogue = document.getElementById("shopping_cart")
+
+        bookCatalogue.innerHTML = "";
+
+        let htmlString = `
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Publisher</th>
+            <th>Remove</th>
+        </tr>`
+
+        books.forEach((item) => {
+            htmlString += `
+            \n<tr>
+                <td>${item.fields.book_title}</td>
+                <td>${item.fields.book_author}</td>
+                <td>${item.fields.isbn}</td>
+                <td>${item.fields.year_of_publication}</td>
+                <td>
+                    <a>
+                        <button type="button" class="btn btn-primary" id="button_add" onclick="removeFromCart(${item.pk})">
+                            Remove
+                        </button>
+                    </a>
+                </td>
+            </tr>`
+        })
+
+        document.getElementById("shopping_cart").innerHTML = htmlString
+    }
+
+    refreshTable();
+
+    function removeFromCart(pk) {
+        fetch("{% url 'daftar_belanja:remove_from_cart' %}", {
+            method: 'DELETE',
+            body: JSON.stringify({
+                'pk': pk
+            })
+        }).then(refreshTable)
+    }
+
+    function confirmPayment() {
+        fetch("{% url 'daftar_belanja:confirm_payment' %}", {
+            method: 'POST',
+        }).then(refreshTable)
+    }
+</script>
+
 {% endblock content %}

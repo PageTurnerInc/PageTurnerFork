@@ -20,5 +20,23 @@
         </a>
     {% endif %}
 
+    <!-- Punya Salsa -->
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Tambah ke Rak Buku
+        </button>
+        <ul class="dropdown-menu">
+            {% for rak in user_rak %}
+                <li>
+                    <a href="{% url 'katalog_buku:add_book_to_rak' id=book.pk rak_id=rak.pk %}">
+                    <button type="button" class="dropdown-item button_add">{{ rak.name }}</button>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <!-- Punya Salsa -->
+
 </div>
 {% endblock content %}
