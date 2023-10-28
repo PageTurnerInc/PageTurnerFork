@@ -29,8 +29,8 @@
             let htmlString = ""
             products.forEach((item) => {
                 let image = item.fields.image_url_l;
-                let book_title = item.fields.book_title.slice(25)
-                let book_author = item.fields.book_author.slice(25)
+                let book_title = item.fields.book_title.slice(0, 25)
+                let book_author = item.fields.book_author.slice(0, 25)
                 if (image == null) {
                     image = "https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/507/5055/no-image__76155.1665667859.jpg?c=2";
                 }
