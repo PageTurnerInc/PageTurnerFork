@@ -11,14 +11,18 @@
         background-size: cover;
         height: 70vh;
     }
-
-    #heading-2 {
+  
+     #heading-2 {
         font-family: 'LeagueSpartan Thin';
         letter-spacing: 3px;
     }
 </style>
 {% endblock meta %}
 
+{% block content %}
+<div class="container mx-3">
+    <h1>Page buku {{ book.book_title }}</h1>
+  
     <form method="POST" action="{% url 'wishlist:add_to_wishlist' book.id %}">
         {% csrf_token %}
         <button type="submit" class="btn btn-primary">Add to Wishlist</button>
