@@ -13,33 +13,16 @@ from django.http import HttpResponseRedirect
 # Create your views here.
 def show_rak(request):
     all_rak = Rak.objects.all()
+    user = Account.objects.get(user=request.user)
+    user_rak = Rak.objects.filter(user=user)
 
     context = {
         'all_rak': all_rak,
+        'user_rak': user_rak,
+        'user': user
     }
 
     return render(request, "menu_rak.html", context)
-
-def create_rak(request):
-    form = RakForm(request.POST or None)
-
-    if form.is_valid() and request.method == "POST":
-        rak = form.save(commit=False)
-        rak.user = Account.objects.get(user=request.user)
-        rak.save()
-        return HttpResponseRedirect(reverse('rak_buku:show_rak'))
-
-    context = {'form': form}
-    return render(request, "create_product.html", context)
-
-def show_json(request):
-    user = Account.objects.get(user=request.user)
-    data = Rak.objects.filter(user=user)  # Filter Rak objects by the associated Account
-    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
-
-def show_json_by_id(request, id):
-    data = Rak.objects.filter(pk=id)
-    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def show_rak_by_id(request, id):
     rak = Rak.objects.get(pk=id)
@@ -50,6 +33,7 @@ def show_rak_by_id(request, id):
         'description': rak.description,
         'user': rak.user.full_name,
         'books': books_in_rak,
+        'rak':rak
     }
 
     return render(request, "rak_buku.html", context)
@@ -76,3 +60,33 @@ def add_rak_ajax(request):
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
+
+def edit_rak(request, id):
+    rak = Rak.objects.get(pk=id)
+
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        description = request.POST.get("description")
+        user = Account.objects.get(user=request.user)
+
+        rak.name = name
+        rak.description = description
+        rak.save()
+
+        return HttpResponseRedirect(reverse('rak_buku:show_rak_by_id', args=[id]))
+    return HttpResponseNotFound()
+
+def delete_book(request, rak_id, book_id):
+        rak = Rak.objects.get(pk=rak_id)
+        book = Book.objects.get(pk=book_id)
+
+        rak.books.remove(book)
+
+        return HttpResponseRedirect(reverse('rak_buku:show_rak_by_id', kwargs={'id': rak_id,}))
+
+def delete_rak(request, id):
+        rak = Rak.objects.get(pk=id)
+
+        rak.delete()
+
+        return HttpResponseRedirect(reverse('rak_buku:show_rak'))
