@@ -9,6 +9,11 @@ from book.models import Book
 from review.models import *
 
 # Create your views here.
+def get_book_rating_by_book_id(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    rating = BookRating.objects.filter(book=book)
+    return HttpResponse(serializers.serialize("json", rating), content_type="application/json")
+
 def get_reviews_json(request):
     reviews = Review.objects.all()
     return HttpResponse(serializers.serialize("json", reviews), content_type="application/json")
@@ -34,7 +39,7 @@ def show_reviews_by_book_id(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     reviews = Review.objects.filter(book=book).order_by('-date')
     book_rating = BookRating.objects.filter(book=book)
-
+    # print(book_rating.fields.rating)
     context = {
         'book': book,
         'reviews': reviews,
@@ -110,7 +115,7 @@ def update_review_ajax(request, review_id):
     if request.method == 'PATCH':
         data = json.loads(request.body)
         print(data)
-        new_rating = int(data.get('rating'))
+        new_rating = data.get('rating')
         new_comment = data.get('comment')
 
         review = get_object_or_404(Review, pk=review_id)
@@ -119,7 +124,7 @@ def update_review_ajax(request, review_id):
         print(book)
         if request.user == review.user:
             if new_rating is not None:
-                review.rating = new_rating
+                review.rating = int(new_rating)
                 review.date = datetime.now()
 
                 book_rating = BookRating.objects.get(book=book)

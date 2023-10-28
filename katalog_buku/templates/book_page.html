@@ -87,8 +87,10 @@
                 </div>
 
             <div class="mt-5">
-            <a href="">Reviews</a>
-        </div>
+                <a href="{% url 'review:show_reviews_by_book_id' book.pk %}">
+                    <button type="button" class="btn btn-outline-warning px-4 mb-3 text-dark">See Ratings & Reviews</button>
+                </a>
+            </div>
     </div>
     </div>
 </div>

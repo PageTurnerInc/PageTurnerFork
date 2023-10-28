@@ -6,7 +6,7 @@ from book.models import Book
 # Create your models here.
 class BookRating(models.Model):
     book = models.OneToOneField(Book, on_delete=models.CASCADE, primary_key=True)
-    rating = models.FloatField(null=True)
+    rating = models.FloatField(default=0.0)
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
