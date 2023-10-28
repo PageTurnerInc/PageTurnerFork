@@ -6,7 +6,6 @@
 
 {% block content %}
 <div class="container mx-3">
-    
     <h1>Page buku {{ book.book_title }}</h1>
 
     <form method="POST" action="{% url 'wishlist:add_to_wishlist' book.id %}">
