@@ -48,7 +48,7 @@ def add_to_wishlist(request, book_id):
 def delete_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     
-    # Pastikan bahwa item wishlist ini dimiliki oleh pengguna yang sedang masuk
+
     try:
         wishlist_item = Wishlist.objects.get(user=request.user, books=book)
         wishlist_item.delete()
