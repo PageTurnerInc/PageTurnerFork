@@ -1,11 +1,13 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseNotFound
 from django.core import serializers
-
+from django.http import HttpResponseRedirect
 from book.models import Book
 from rak_buku.models import Rak
 from main.models import Account
+from django.urls import reverse
+
 
 
 def show_katalog(request):
@@ -74,5 +76,4 @@ def add_book_to_rak(request, id, rak_id):
     rak = Rak.objects.get(pk=rak_id)
     rak.books.add(book)
 
-    # Redirect to the show_book_page view
-    return HttpResponse(b"CREATED", status=201)
+    return HttpResponseRedirect(reverse('katalog_buku:show_book', args=[id]))
