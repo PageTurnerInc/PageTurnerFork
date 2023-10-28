@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Book, Wishlist
-from main.models import Account  # Impor model Account dari modul "main"
+from main.models import Account  
 from django.contrib.auth import login
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, JsonResponse
 from django.urls import reverse
@@ -11,32 +11,28 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 @login_required(login_url='main:login_user')
-def show_main(request):
-    # Ambil semua buku yang tersedia
-    available_books = Book.objects.all()
-
-    context = {
-        'books': available_books,
-    }
-
-    return render(request, 'main.html', context)
-
-@login_required(login_url='main:login_user')
 def show_wishlist(request):
     user = request.user
     wishlists = Wishlist.objects.filter(user=user)
     books = [wishlist.books for wishlist in wishlists]
 
     context = {
-        'books': books,  # Mengirim daftar buku ke template
+        'books': books,  
         'user': user
     }
     return render(request, 'wishlist.html', context)
 
 @login_required(login_url='main:login_user')
 def add_to_wishlist(request, book_id):
-    # if request.method == "GET":
-    #     return HttpResponseRedirect(reverse("wishlist:show_main"))
+    user = request.user
+
+    try:
+        account = Account.objects.get(user=user)
+        is_premium = account.get_is_premium()
+        if not is_premium:
+            return HttpResponse("Anda harus menjadi pengguna premium untuk menambahkan item ke wishlist.")
+    except Account.DoesNotExist:
+        pass
     if request.method == "POST":
         books = Book.objects.get(id=book_id)
         try:
@@ -56,9 +52,8 @@ def delete_book(request, book_id):
     try:
         wishlist_item = Wishlist.objects.get(user=request.user, books=book)
         wishlist_item.delete()
-        messages.success(request, 'Book has been removed from your wishlist')
     except Wishlist.DoesNotExist:
-        messages.error(request, 'Book not found in your wishlist')
+        pass
 
     return HttpResponseRedirect(reverse("wishlist:show_wishlist"))
 
@@ -66,6 +61,4 @@ def get_wishlist_items(request):
     user = request.user
     wishlists = Wishlist.objects.filter(user=user)
     books = [wishlist.books for wishlist in wishlists]
-    # Mengambil data yang sesuai dengan atribut yang Anda akses di JavaScript
-    serialized_books = serializers.serialize('json', books, fields=('image_url_s', 'book_title', 'book_author', 'year_of_publication', 'publisher'))
-    return HttpResponse(serialized_books, content_type="application/json")
+    return HttpResponse(serializers.serialize('json', books, fields=('image_url_l', 'book_title', 'book_author', 'year_of_publication', 'publisher')), content_type="application/json")

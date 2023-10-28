@@ -3,58 +3,68 @@
 {% block content %}
 <style>
     body {
-        background: linear-gradient(to bottom, #ffffff, #FC9F32);
+        background: linear-gradient( rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.85) ), url(https://cdn.fstoppers.com/styles/full/s3/photos/2019/05/e1c586532fcb6672fac6d7a8cfa7a1b8.jpg?itok=t9H-u__W);
+        background-position: center;
+        background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover;
-        margin: 0;
-        padding: 0;
-        height: 100vh;
+        height: 70vh;
     }
 
-    .navbar {
-        margin-bottom: 90px; /* Menambahkan jarak antara navbar dan konten */
-    }
+
 
     .footer {
-        background-color: #8a4a00;
-        color: white;
+        background-color: #ffffff;
+        color: rgb(0, 0, 0);
         padding: 10px;
         text-align: center;
         position: fixed;
         bottom: 0;
         width: 100%;
-        margin-top: 20px; /* Ubah nilai margin-top sesuai kebutuhan Anda */
+        margin-top: 20px; 
     }
+
     .row {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px; /* Jarak antara cards */
-        justify-content: center; /* Kartu akan ditengah pada baris */
+        gap: 10px; 
+        justify-content: center; 
     }
 
-    .card-item {
-        width: calc(30% - 20px); /* Mengatur lebar card agar tiga kartu ditampilkan per baris */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        margin-bottom: 20px;
+    .card{
+        margin-bottom: 50px;
+        margin-top: 20px;
     }
-    
+
+
+    .navbar-brand {
+        font-family: 'LeagueSpartan Thin';
+        letter-spacing: 3px;
+        font-size: 2vw;
+
+        text-decoration: none; 
+    }
+
+
 </style>
+<nav class="navbar navbar-expand-lg bg-light bg-gradient">
+    <div class="container-fluid mx-5">
+        <span class="navbar-brand mb-0 h1">PageTurner</span>
 
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #8a4a00;">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">{{ request.user }} 's Wishlist</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link active mb-0" href="{% url 'katalog_buku:show_katalog' %}">Catalogue</a>
                 </li>
             </ul>
         </div>
-
+    </div>
 </nav>
+
+
 
 <div id="wishlist-items" class="row justify-content-center">
 </div>
@@ -70,21 +80,22 @@
     cardContainer.innerHTML = "";
 
     const books = await getWishlistItems();
+    
 
     books.forEach((book) => {
         cardContainer.innerHTML += `
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="${book.fields.image_url_s}" class="card-img-top" alt="${book.fields.book_title}">
-                    <div class="card-body">
-                        <h5 class="card-title">${book.fields.book_title}</h5>
-                        <p class="card-text">Author: ${book.fields.book_author}</p>
-                        <p class="card-text">Year of Publication: ${book.fields.year_of_publication}</p>
-                        <p class="card-text">Publisher: ${book.fields.publisher}</p>
-                        <button class="btn btn-danger" onclick="deleteItem(${book.pk})">Delete</button>
-                    </div>
+        <div class="col-md-4 mb-4">
+            <div class="card" style="width: 400px;">
+                <img src="${book.fields.image_url_l}" class="card-img-top" alt="${book.fields.book_title}" style="max-height: 400px;">
+                <div class="card-body">
+                    <h5 class="card-title">${book.fields.book_title}</h5>
+                    <p class="card-text">Author: ${book.fields.book_author}</p>
+                    <p class="card-text">Year of Publication: ${book.fields.year_of_publication}</p>
+                    <p class="card-text">Publisher: ${book.fields.publisher}</p>
+                    <button class="btn btn-danger" onclick="deleteItem(${book.pk})">Delete</button>
                 </div>
-            </div>`;
+            </div>
+        </div>`;
     });
 }
 
@@ -95,7 +106,6 @@
         }).then(refreshWishlist);
     }
 
-    // Panggil fungsi untuk memuat wishlist saat halaman dimuat
     $(document).ready(function () {
         refreshWishlist();
     });
@@ -103,6 +113,6 @@
 
 
 <div class="footer">
-    &copy; 2023 Your Company. All rights reserved.
+    &copy; 2023 PageTurner. All rights reserved.
 </div>
 {% endblock content %}
