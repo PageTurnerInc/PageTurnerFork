@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .star-widget label{
+        font-size: 30px;
+        color: #c4c4c4;
+        padding: 10px;
+        /* float: right; */
+        transition: all 0.2s ease;
+    }
+
+    .star-widget input:not(:checked) ~ label:hover,
+    .star-widget input:not(:checked) ~ label:hover ~ label{
+        color: #fd4;
+    }
+    .star-widget input:checked ~ label{
+        color: #fd4;
+    }
+    .star-ratings {
+        unicode-bidi: bidi-override;
+        color: #b6b4b4;
+        font-size: 32px;
+        position: relative;
+        margin: 0;
+        padding: 0;
+        .fill-ratings {
+            color: #fd4;
+            padding: 0;
+            position: absolute;
+            z-index: 1;
+            display: block;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            
+            span {
+                display: inline-block;
+            }
+        }
+        .empty-ratings {
+            padding: 0;
+            display: block;
+            z-index: 0;
+        }
+    }
+</style>
+
+<div id="create-review-button" class="container mx-3 my-3">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Create Your Review
+    </button>
+</div>
+
+<div class="container mx-3 my-3">
+    <div class="container my-2">
+        <h4>My Review</h4>
+    </div>
+    <div id="my-review-card"></div>
+</div>
+
+<div class="container mx-3 my-3">
+    <div class="container my-2">
+        <h4>Other Reviews</h4>
+    </div>
+    <div id="review-card"></div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Create Review</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>  
+        <div class="modal-body">
+            <form id="form" onsubmit="return false;">
+                {% csrf_token %}
+                <div class="star-widget" style="direction: rtl; text-align: center;">
+                    <input class="form-check-input d-none" type="radio" name="rating" id="rating5" value="5">
+                    <label class="form-check-label fas fa-star cursor-pointer" for="rating5" title="Excellent"></label>
+
+                    <input class="form-check-input d-none" type="radio" name="rating" id="rating4" value="4">
+                    <label class="form-check-label fas fa-star cursor-pointer" for="rating4" title="Good"></label>
+
+                    <input class="form-check-input d-none" type="radio" name="rating" id="rating3" value="3">
+                    <label class="form-check-label fas fa-star cursor-pointer" for="rating3" title="Average"></label>
+
+                    <input class="form-check-input d-none" type="radio" name="rating" id="rating2" value="2">
+                    <label class="form-check-label fas fa-star cursor-pointer" for="rating2" title="Below Average"></label>
+                    
+                    <input class="form-check-input d-none" type="radio" name="rating" id="rating1" value="1">
+                    <label class="form-check-label fas fa-star cursor-pointer" for="rating1" title="Bad"></label>
+                    
+                </div>
+
+                <div class="mb-3 mt-3">
+                    <label for="description" class="col-form-label">Comments:</label>
+                    <textarea class="form-control" id="comment" name="comment"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="button-close">Close</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="button-add">Create</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="updateModalLabel">Edit Review</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>  
+        <div class="modal-body">
+            <form id="form" onsubmit="return false;">
+                {% csrf_token %}
+                <div class="star-widget" style="direction: rtl; text-align: center;">
+                    <input class="form-check-input d-none" type="radio" name="new-rating" id="new-rating5" value="5">
+                    <label class="form-check-label fas fa-star cursor-pointer" for="new-rating5" title="Excellent"></label>
+
+                    <input class="form-check-input d-none" type="radio" name="new-rating" id="new-rating4" value="4">
+                    <label class="form-check-label fas fa-star cursor-pointer" for="new-rating4" title="Good"></label>
+
+                    <input class="form-check-input d-none" type="radio" name="new-rating" id="new-rating3" value="3">
+                    <label class="form-check-label fas fa-star cursor-pointer" for="new-rating3" title="Average"></label>
+
+                    <input class="form-check-input d-none" type="radio" name="new-rating" id="new-rating2" value="2">
+                    <label class="form-check-label fas fa-star cursor-pointer" for="new-rating2" title="Below Average"></label>
+                    
+                    <input class="form-check-input d-none" type="radio" name="new-rating" id="new-rating1" value="1">
+                    <label class="form-check-label fas fa-star cursor-pointer" for="new-rating1" title="Bad"></label>
+                    
+                </div>
+
+                <div class="mb-3 mt-3">
+                    <label for="description" class="col-form-label">Comments:</label>
+                    <textarea class="form-control" id="new-comment" name="new-comment"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="button-close">Close</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="button-update">Edit</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function getReviews() {
+        return fetch("{% url 'review:get_others_reviews_json' book.pk %}").then((res) => res.json())
+    }
+
+    async function getMyReview() {
+        return fetch("{% url 'review:get_reviews_json_by_request_id' book.pk %}").then((res) => res.json())
+    }
+
+    async function refreshMyReviews() {
+        document.getElementById("my-review-card").innerHTML = ""
+        const reviews = await getMyReview()
+        let htmlString = ""
+        reviews.forEach((review, index, array) => {
+            var date = new Date(review.fields.date)
+            htmlString += `\n
+            <div class="my-2">
+            <div class="card w-75">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title">
+                            <i class="fa fa-user pe-2" aria-hidden="true"></i>
+                            ${review.fields.reviewer}
+                        </h5>
+                        <p style="text-align: right;">
+                            ${date.toLocaleString('en-us', {weekday:'long'})}, ${date.getDay()}-${date.getMonth()}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}
+                        </p>
+                    </div>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <i class="fas fa-star pe-1" aria-hidden="true"></i>
+                        ${review.fields.rating}
+                    </h6>
+                    <p class="card-text">${review.fields.comment}</p>
+                    <button onclick="deleteReview(${review.pk}); return false;" type="submit" class="btn btn-danger" id="button-delete">Delete</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">Edit</button>
+                </div>
+            </div>
+            </div>`
+
+            document.getElementById("button-update").setAttribute('onclick', `updateReview(${review.pk}); return false;`)
+        });
+        document.getElementById("my-review-card").innerHTML = htmlString;
+    }
+
+    refreshMyReviews()
+
+    async function refreshReviews() {
+        document.getElementById("review-card").innerHTML = ""
+        const reviews = await getReviews()
+        let htmlString = ""
+        reviews.forEach((review, index, array) => {
+            var date = new Date(review.fields.date)
+            htmlString += `\n
+            <div class="my-2">
+            <div class="card w-75">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title">
+                            <i class="fa fa-user pe-2" aria-hidden="true"></i>
+                            ${review.fields.reviewer}
+                        </h5>
+                        <p style="text-align: right;">
+                            ${date.toLocaleString('en-us', {weekday:'long'})}, ${date.getDay()}-${date.getMonth()}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}
+                        </p>
+                    </div>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <i class="fas fa-star pe-1" aria-hidden="true"></i>
+                        ${review.fields.rating}
+                    </h6>
+                    <p class="card-text">${review.fields.comment}</p>
+                </div>
+            </div>
+            </div>`
+        });
+        document.getElementById("review-card").innerHTML = htmlString;
+    }
+
+    refreshReviews()
+
+    function addReview() {
+        fetch("{% url 'review:create_review_ajax' book_id=book.pk %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(() => {
+            refreshReviews();
+            refreshMyReviews();
+        })
+
+        document.getElementById("form").reset()
+        return false
+    }
+
+    document.getElementById("button-add").onclick = addReview
+
+    function closeModal() {
+        document.getElementById("form").reset()
+        return false
+    }
+
+    document.getElementById("button-close").onclick = closeModal
+
+    function deleteReview(reviewId) {
+        fetch(`${window.location.origin}/review/delete-review-ajax/${reviewId}/`, {
+            method: "DELETE",
+        }).then(() => {
+            refreshReviews();
+            refreshMyReviews();
+        })
+
+        return false
+    }
+
+    function updateReview(reviewId) {
+        const newRating = document.querySelector('input[name="new-rating"]:checked').value;
+        const newComment = document.getElementById('new-comment').value;
+
+        const data = {
+            rating: newRating,
+            comment: newComment
+        };
+
+        fetch(`${window.location.origin}/review/update-review-ajax/${reviewId}/`, {
+            method: "PATCH",
+            body: JSON.stringify(data)
+        }).then(response => {
+            if (response.ok) {
+                refreshReviews();
+                refreshMyReviews();
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+
+        return false;
+    }
+</script>
+
+{% endblock content %}

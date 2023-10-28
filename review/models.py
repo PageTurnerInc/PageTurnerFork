@@ -6,13 +6,15 @@ from book.models import Book
 # Create your models here.
 class BookRating(models.Model):
     book = models.OneToOneField(Book, on_delete=models.CASCADE, primary_key=True)
-    rating = models.FloatField()
+    rating = models.FloatField(null=True)
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    reviewer = models.TextField()
     comment = models.TextField()
     rating = models.IntegerField()
+    date = models.DateTimeField()
 
     class Meta:
         constraints = [

@@ -21,5 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
     path("api/books/", include("book.urls")),
-    path("reviews/", include("review.urls"))
+    path("review/", include("review.urls")),
+    path('daftar_belanja/', include('daftar_belanja.urls')),
+    path('katalog/', include("katalog_buku.urls")),
 ]
