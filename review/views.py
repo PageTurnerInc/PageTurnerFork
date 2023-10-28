@@ -1,14 +1,32 @@
 import json
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.core import serializers
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 
 from book.models import Book
+from review.forms import ReviewForm
 from review.models import *
 
 # Create your views here.
+def add_review(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    form = ReviewForm(request.POST or None, initial={'book': book, 'user': request.user})
+
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.reviewer = request.user
+            review.date = datetime.now()
+            review.save()
+            return HttpResponseRedirect(reverse('review:show_reviews_by_book_id', args=(book_id,)))
+
+    context = {'form': form, 'name': request.user.username}
+    return render(request, "make_review.html", context)
+
 def get_book_rating_by_book_id(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     rating = BookRating.objects.filter(book=book)

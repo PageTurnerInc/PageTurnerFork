@@ -501,6 +501,9 @@
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Create Your Review
             </button>
+            <a class="btn btn-outline-primary" href="{% url 'review:add_review' book.pk %}">
+                Create Your Review In Another Page
+            </a>
             `
 
             document.getElementById("rating-of-book-user").innerHTML = "? / 5"
