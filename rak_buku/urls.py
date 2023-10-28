@@ -7,8 +7,12 @@ app_name = 'rak_buku'
 urlpatterns = [
     path('', show_rak, name='show_rak'),
     path('<int:id>/', show_rak_by_id, name='show_rak_by_id'), 
-    path('create-rak', create_rak, name='create_rak'),
     path('get-rak/', get_rak_json, name='get_rak_json'),
     path('get-rak/<int:id>/', get_rak_json_by_id, name='get_rak_json_by_id'),
-    path('create-ajax/', add_rak_ajax, name='add_rak_ajax')
+    path('edit-rak/<int:id>/', edit_rak, name='edit_rak'),
+    path('delete-rak/<int:id>/', delete_rak, name='delete_rak'),
+    path('create-ajax/', add_rak_ajax, name='add_rak_ajax'),
+
+    path('delete-book/<int:rak_id>/<int:book_id>/', delete_book, name='delete_book')
+
 ]
