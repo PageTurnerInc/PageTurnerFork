@@ -2,121 +2,160 @@
 {% load static %}
 
 {% block meta %}
+    <title>Home - PageTurner</title>
+    <style>
+        #image {
+            background: linear-gradient( rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.85) ), url(https://cdn.fstoppers.com/styles/full/s3/photos/2019/05/e1c586532fcb6672fac6d7a8cfa7a1b8.jpg?itok=t9H-u__W);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            height: 70vh;
+        }
 
-<title>Login</title>
-<style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #fff;
-        /* background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1)),
-                            url(https://i.pinimg.com/originals/82/74/72/827472c996956ff73ca44addd4ced98f.png);
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed; */
-        color: #2d2d2d;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-    }
+        #heading-2 {
+            font-family: 'LeagueSpartan Thin';
+            letter-spacing: 3px;
+            font-size: 2vw;
+        }
 
-    h1 {
-        padding: 20px;
-        text-align: center;
-        font-weight: bold;
-    }
+        /* html,body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            overflow-x: hidden; 
+        } */
 
-    .login {
-        width: 25%;
-        min-width: 400px;
-        padding: 20px;
-        border-radius: 10px;
-        background-color: rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(10px);
-        border-radius: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        display: block;
-        margin: 0 auto;
-    }
-
-    input[type="text"],
-    input[type="password"] {
-        width: 100%;
-        margin-left: 15px;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        background-color: #fff;
-        color: #333;
-    }
-
-    .login-form {
-        margin: 5px 0 5px 5px;
-    }
-
-    .login_btn {
-        width: 72%;
-        background-color: #1a3891;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        text-align: center;
-        margin: 5px 5px 5px 9px;
-    }
-
-    .login_btn:hover {
-        background-color: #2959e6;
-    }
-
-    .no-account {
-        text-align: center;
-    }
-</style>
-    
+    </style>
 {% endblock meta %}
 
 {% block content %}
+    <nav class="navbar navbar-expand-lg bg-light bg-gradient">
+        <div class="container-fluid mx-5">
+            <span class="navbar-brand mb-0 h1">PageTurner</span>
 
-<div class = "login">
-
-    <h1>Login</h1>
-
-    <form method="POST" action="">
-        {% csrf_token %}
-        <table class="login-form">
-            <tr>
-                <td>Username: </td>
-                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
-            </tr>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active mb-0" href="#login-banner">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active mb-0" href="{% url 'main:create_account' %}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active mb-0" href="#catalogue-banner">Catalogue</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container-fluid text-center" id="image">
+        <div class="row align-items-center justify-content-center" style="height: 70vh;">
+            <div class="col-5">
+                <div class="row">
+                    <h1 class="display-1 text-light my-0" style="font-family: 'LeagueSpartan Medium'; letter-spacing: 3px; font-size: 6vw;">PageTurner</h1>
+                </div>
+                <div class="row mx-5">
+                    <div class="col px-0">
+                        <h1 class="display-1 text-light my-0" id="heading-2">Learn</h1>
+                    </div>
+                    <div class="col px-0">
+                        <h1 class="display-1 text-light my-0" id="heading-2">Unlearn</h1>
+                    </div>
+                    <div class="col px-0">
+                        <h1 class="display-1 text-light my-0" id="heading-2">Relearn</h1>
+                    </div>
                     
-            <tr>
-                <td>Password: </td>
-                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
-            </tr>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <tr>
-                <td></td>
-                <td><input class="login_btn" type="submit" value="Login"></td>
-            </tr>
-        </table>
-    </form>
+    <div id="catalogue-banner" class="container" style="height: 30vh;">
+        <div class="row align-items-center" style="height: 25vh;">
+            <div class="col">
+                <h1 class="display-1 text-dark text-center my-0" style="font-family: 'LeagueSpartan Thin'; letter-spacing: 3px; font-size: 2vw;">Check Out Our Best Collection</h1>
+            </div>
+        </div>
+    </div>
 
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}     
+    <div class="container-fluid">
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner mb-5">
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                {% for book in books %}
+                    {% if book.id == 1 %}
+                        <div class="carousel-item active">
+                    {% else %}
+                        <div class="carousel-item">
+                    {% endif %}
+                            <div class="container-auto">
+                                <div class="row justify-content-center align-items-center">
+                                    <div class="col-3">
+                                        <img src="{{ book.image_url_l }}" style="width: 400px; height: 500px;" alt="...">
+                                    </div>
+                                    <div class="col-6">
+                                        <h1 class="display-1 text-dark text-center my-0" style="font-family: 'LeagueSpartan Medium'; letter-spacing: 3px; font-size: 3vw;">{{ book.book_title }}</h1>
+                                        <h1 class="display-1 text-dark text-center my-0" id="heading-2">{{ book.book_author }}</h1>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                {% endfor %}
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="height: 10vh;">
+    </div>
+
+    <div class="container-auto" style="height: 20vh;" id="image">
+        <div class="row align-items-center" style="height: 20vh;">
+            <div class="col">
+                <h1 class="display-1 text-light text-center my-0" style="font-family: 'LeagueSpartan Thin'; letter-spacing: 3px; font-size: 2vw;">Sign In to Get The Best Experience</h1>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-banner" class="container-auto" style="height: 80vh;">
+        <div class="row justify-content-center align-items-center" style="height: 80vh;">
+            <div class="col-4 text-center">
+                <h1 class="display-1 text-dark text-center my-0" style="font-family: 'LeagueSpartan Thin'; letter-spacing: 3px; font-size: 2vw;">Don't have an account? Sign up <a href="{% url 'main:create_account' %}" style="text-decoration: none; color: black;">here</a></h1>
+            </div>
+            <div class="col-1">
+
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <div class="mb-4">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username">
+                            </div>
+                            <div class="mb-4">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                            <button type="submit" class="btn btn-outline-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
         
-    <p class="no-account">Don't have an account yet? <a href="{% url 'main:create_account' %}">Register Now</a></p>
-
-</div>
-
 {% endblock content %}
