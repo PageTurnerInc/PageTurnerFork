@@ -12,20 +12,6 @@ from django.http import JsonResponse
 import json
 
 @login_required(login_url='/login')
-def add_book(request):
-    account = Account.objects.get(user=request.user)
-    cart, created = ShoppingCart.objects.get_or_create(account=account)
-
-    context = {
-        'user': request.user.username,
-        'account': account,
-        'cart': cart,
-        'books': Book.objects.all(),
-    }
-
-    return render(request, 'add_book.html', context)
-
-@login_required(login_url='/login')
 def shopping_cart(request):
     account = Account.objects.get(user=request.user)
     cart, created = ShoppingCart.objects.get_or_create(account=account)
@@ -35,6 +21,11 @@ def shopping_cart(request):
         'account': account,
         'cart': cart.cart.all,
     }
+
+    if not cart.cart.all():
+        context['cart_empty'] = True
+    else:
+        context['cart_empty'] = False
 
     return render(request, 'shopping_cart.html', context)
 
@@ -49,20 +40,22 @@ def owned_books(request):
         'books': cart.owned_books.all,
     }
 
+    if not cart.owned_books.all():
+        context['no_books'] = True
+    else:
+        context['no_books'] = False
+
     return render(request, 'owned_books.html', context)
 
-@csrf_exempt
-def add_to_cart_ajax(request):
-    if request.method == 'POST':
-        pk = json.loads(request.body).get('pk')
-        account = Account.objects.get(user=request.user)
-        cart, created = ShoppingCart.objects.get_or_create(account=account)
-        book = Book.objects.get(pk=pk)
-        cart.cart.add(book)
+def get_shopping_cart(request):
+    account = Account.objects.get(user=request.user)
+    cart = ShoppingCart.objects.get(account=account)
+    return HttpResponse(serializers.serialize('json', cart.cart.all()))
 
-        return HttpResponse(b"CREATED", status=201)
-
-    return HttpResponseNotFound()
+def get_owned_books(request):
+    account = Account.objects.get(user=request.user)
+    cart = ShoppingCart.objects.get(account=account)
+    return HttpResponse(serializers.serialize('json', cart.owned_books.all()))
 
 def add_to_cart(request, id):
     account = Account.objects.get(user=request.user)
@@ -77,25 +70,39 @@ def add_to_cart(request, id):
     cart.cart.add(book)
     return render(request, 'katalog_buku.html', context)
 
+@csrf_exempt
+def add_to_cart_ajax(request):
+    if request.method == 'POST':
+        pk = json.loads(request.body).get('pk')
+        account = Account.objects.get(user=request.user)
+        cart, created = ShoppingCart.objects.get_or_create(account=account)
+        book = Book.objects.get(pk=pk)
+        cart.cart.add(book)
 
-def get_shopping_cart(request):
-    account = Account.objects.get(user=request.user)
-    cart = ShoppingCart.objects.get(account=account)
-    return HttpResponse(serializers.serialize('json', cart.cart.all()))
+        return HttpResponse(b"CREATED", status=201)
 
-def get_owned_books(request):
-    account = Account.objects.get(user=request.user)
-    cart = ShoppingCart.objects.get(account=account)
-    return HttpResponse(serializers.serialize('json', cart.owned_books.all()))
+    return HttpResponseNotFound()
 
 @csrf_exempt
-def remove_from_cart(request):
+def remove_from_cart_ajax(request):
     if request.method == 'DELETE':
         pk = json.loads(request.body).get('pk')
         account = Account.objects.get(user=request.user)
         cart, created = ShoppingCart.objects.get_or_create(account=account)
         book = Book.objects.get(pk=pk)
         cart.cart.remove(book)
+        return HttpResponse(b"DELETED", 201)
+
+    return HttpResponseNotFound()
+
+@csrf_exempt
+def delete_book_ajax(request):
+    if request.method == 'DELETE':
+        pk = json.loads(request.body).get('pk')
+        account = Account.objects.get(user=request.user)
+        cart, created = ShoppingCart.objects.get_or_create(account=account)
+        book = Book.objects.get(pk=pk)
+        cart.owned_books.remove(book)
         return HttpResponse(b"DELETED", 201)
 
     return HttpResponseNotFound()
@@ -108,6 +115,11 @@ def confirm_payment(request):
         for book in cart.cart.all():
             if book not in cart.owned_books.all():
                 cart.owned_books.add(book)
+
+        context = {
+            'cart': cart.cart.all(),
+        }
+
         cart.cart.clear()
         return HttpResponse(b"CREATED", status=201)
     

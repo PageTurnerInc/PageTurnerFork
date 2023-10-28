@@ -9,7 +9,6 @@ urlpatterns = [
     path('add-book-katalog/', add_book_katalog, name='add_book_katalog'),
     path('delete-book-katalog/<int:id>', delete_book_katalog, name='delete_book_katalog'),
     path('get-product/', get_product_json, name='get_product_json'),
-
     path('book/<int:id>/<int:rak_id>/', add_book_to_rak, name='add_book_to_rak'),
 
 ]
