@@ -14,7 +14,7 @@ PageTurner adalah platform e-commerce yang memungkinkan pengguna untuk membeli b
 
 Dataset: https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset 
 
-Link Deployment: 
+Link Deployment: http://pageturner-c06-tk.pbp.cs.ui.ac.id/
 
 ## Background
 
