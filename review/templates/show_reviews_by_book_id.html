@@ -2,6 +2,12 @@
 {% load static %}
 
 {% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"  rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
 <style>
     .star-widget label{
         font-size: 30px;
@@ -629,9 +635,11 @@
             return false;
         }
 
+        var comment = document.querySelector('textarea[name="comment"]').value;
+
         fetch("{% url 'review:create_review_ajax' book_id=book.pk %}", {
             method: "POST",
-            body: new FormData(document.querySelector('#form'))
+            body: JSON.stringify({ rating: rating.value, comment: comment }),
         }).then(() => {
             refreshReviews();
             refreshMyReviews();
@@ -687,6 +695,7 @@
             newRatingValue = newRating.value
         }
 
+        console.log(newRatingValue)
         const data = {
             rating: newRatingValue,
             comment: newComment
@@ -695,18 +704,15 @@
         fetch(`${window.location.origin}/review/update-review-ajax/${reviewId}/`, {
             method: "PATCH",
             body: JSON.stringify(data)
-        }).then(response => {
-            if (response.ok) {
+        }).then(() => {
                 refreshReviews();
                 refreshMyReviews();
                 refreshBookRating();
                 reviewSize();
                 sizePerRating();
                 refreshReviewsByRating();
-            }
-        }).catch(error => {
-            console.error('Error:', error);
-        });
+            }   
+        )
 
         return false;
     }
