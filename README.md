@@ -12,6 +12,10 @@
 
 PageTurner adalah platform e-commerce yang memungkinkan pengguna untuk membeli buku secara online. Selain fitur pembelian buku, platform ini juga memiliki sistem rekomendasi buku yang membantu pengguna menemukan buku-buku yang sesuai dengan minat dan preferensi mereka.
 
+Dataset: https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset 
+
+Link Deployment: 
+
 ## Background
 
 Saat ini, tingkat kesadaran literasi masyarakat Indonesia masih memprihatinkan. Menurut UNESCO, Indonesia berada di urutan kedua dari bawah soal literasi dunia dan minat baca masyarakat Indonesia hanya 0,0001%. Tingkat kesadaran literasi yang masih rendah dan minat baca yang sangat minim ini disebabkan oleh berbagai macam faktor. Salah satu faktornya adalah kurangnya ketertarikan dalam membaca karena salah pilih genre. Banyak masyarakat yang memutuskan untuk tidak membaca buku karena tidak menemukan buku-buku yang menarik bagi mereka sehingga minat mereka untuk membaca buku berkurang. Faktor lainnya yang menyebabkan tingkat literasi di Indonesia rendah adalah kendala aksesibilitas. Banyak masyarakat, terutama yang tinggal di daerah terpencil atau dengan akses terbatas ke perpustakaan fisik sehingga menghadapi kesulitan untuk mendapatkan buku. 
