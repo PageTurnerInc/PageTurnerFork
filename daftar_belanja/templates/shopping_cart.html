@@ -68,7 +68,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="form" onsubmit="return false;">
+                <form id="payment-form" onsubmit="return false;">
                     {% csrf_token %}
                     <div class="mb-3 justify-content-center text-center">
                         <h4 style="font-weight: bold;">Please confirm your receipt</h4>
@@ -88,8 +88,12 @@
                         </table>
                     </div>
                     <div class="mb-3">
-                        <label for="payment-method" class="col-form-label" style="font-weight: bold;">Payment Method:</label>
-                        <select class="form-control" id="payment-method" name="payment-method">
+                        <label for="receiver" class="col-form-label" style="font-weight: bold;">Receiver:</label>
+                        <input type="text" class="form-control" id="receiver" name="receiver"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="payment" class="col-form-label" style="font-weight: bold;">Payment Method:</label>
+                        <select class="form-control" id="payment" name="payment">
                             <option value="Debit Card">Debit Card</option>
                             <option value="Credit Card">Credit Card</option>
                             <option value="GoPay">GoPay</option>
@@ -223,8 +227,10 @@
                                 </div>
                             </div>
                             <div class="modal-footer justify-content-center">
-                                <button type="button" class="btn btn-outline-info px-4" data-bs-dismiss="modal" onclick="">Book Details</button>
-                                <button type="button" class="btn btn-outline-success px-4" data-bs-dismiss="modal" onclick="removeFromCart(${item.pk})">Remove from Cart</button>
+                                <a href="">
+                                    <button type="button" class="btn btn-outline-info px-4" data-bs-dismiss="modal" onclick="">Book Details</button>
+                                    <button type="button" class="btn btn-outline-success px-4" data-bs-dismiss="modal" onclick="removeFromCart(${item.pk})">Remove from Cart</button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -249,7 +255,11 @@
     function confirmPayment() {
         fetch("{% url 'daftar_belanja:confirm_payment' %}", {
             method: 'POST',
+            body: new FormData(document.querySelector('#payment-form'))
         }).then(refreshAfterPayment).then(refreshCards)
+
+        document.getElementById("payment-form").reset()
+        return false
     }
 </script>
 

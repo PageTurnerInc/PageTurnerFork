@@ -1,5 +1,6 @@
 from main.models import Account
 from book.models import Book
+from django.contrib.auth.models import User
 from daftar_belanja.models import *
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
@@ -110,17 +111,18 @@ def delete_book_ajax(request):
 @csrf_exempt
 def confirm_payment(request):
     if request.method == 'POST':
-        account = Account.objects.get(user=request.user)
-        cart, created = ShoppingCart.objects.get_or_create(account=account)
-        for book in cart.cart.all():
-            if book not in cart.owned_books.all():
-                cart.owned_books.add(book)
+        receiver = User.objects.get(username = request.POST.get("receiver"))
+        # account = Account.objects.get(full_name = request.POST.get("receiver"))
+        giver = Account.objects.get(user = request.user)
+        account = Account.objects.get(user = receiver)
+        receiver_cart, created = ShoppingCart.objects.get_or_create(account=account)
+        giver_cart, created = ShoppingCart.objects.get_or_create(account=giver)
+        for book in receiver_cart.cart.all():
+            # if book not in receiver_cart.owned_books.all():
+            receiver_cart.owned_books.add(book)
 
-        context = {
-            'cart': cart.cart.all(),
-        }
-
-        cart.cart.clear()
+        giver_cart.cart.clear()
+        
         return HttpResponse(b"CREATED", status=201)
     
     return HttpResponseNotFound()
