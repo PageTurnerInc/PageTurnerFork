@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-    <title>Katalog - PageTurner</title>
+    <title>Catalogue - PageTurner</title>
+
+    <style>
+        .navbar-nav .nav-item a:hover {
+            color: blue;
+        }
+    </style>
 
     <script>
         function addProduct() {
@@ -19,32 +25,75 @@
         }
 
         async function refreshProducts() {
-            document.getElementById("book-cards").innerHTML = ""
             const products = await getProducts()
             let htmlString = ""
             products.forEach((item) => {
-                htmlString += `
-                <a href="book/${ item.pk }" style="text-decoration: none;">
-                    <div class="card my-3">
-                        <div class="card-body">
-                        <blockquote class="blockquote mb-0">
-                            <p>${ item.fields.book_title }</p>
-                            <footer class="blockquote-footer">${ item.fields.book_author }</footer>
-                        </blockquote>
+                let image = item.fields.image_url_l;
+                let book_title = item.fields.book_title.slice(0, 25)
+                let book_author = item.fields.book_author.slice(0, 25)
+                if (image == null) {
+                    image = "https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/507/5055/no-image__76155.1665667859.jpg?c=2";
+                }
+                htmlString += `<div class="col-auto mx-3">
+                    <a style="text-decoration: none;" data-bs-toggle="modal" data-bs-target="#checkout${ item.pk }">
+                        <div class="card" style="width: 18rem;">
+                            <img src="${ image }" class="card-img-top" alt="..." style="width: 18rem; height: 350px;">
+                            <div class="card-body">
+                                <p class="card-text" style="font-family: 'LeagueSpartan Medium'; font-size: 1vw;">${ book_title }</p>
+                                <p class="card-text" style="font-family: 'LeagueSpartan Thin'; font-size: 1vw;">${ book_author }</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>`
+            })
+            document.getElementById("book-cards").innerHTML = htmlString
+
+            htmlString = ""
+            products.forEach((item) => {
+                let image = item.fields.image_url_l;
+                let book_title = item.fields.book_title.slice(45)
+                htmlString += 
+                `<div class="modal fade" id="checkout${ item.pk }" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5 me-5" id="exampleModalLabel" style="font-family: 'LeagueSpartan Medium';">${ book_title }</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container text-center">
+                                    <div class="row justify-content-center">
+                                        <div class="col mb-3">
+                                            <img src="${ image }" class="img-fluid rounded" alt="...">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3 justify-content-center text-center">
+                                        <div class="col-mb-3">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel" style="font-family: 'LeagueSpartan Thin';">${ item.fields.book_author }</h1>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Add to Wishlist</button>
+                                <button type="button" class="btn btn-outline-info px-4" data-bs-dismiss="modal">Book Details</button>
+                                <button type="button" class="btn btn-outline-success px-4" data-bs-dismiss="modal">Add to Cart</button>
+                            </div>
                         </div>
                     </div>
-                </a>`
+                </div>`;
             })
-            
-            document.getElementById("book-cards").innerHTML = htmlString
+            document.getElementById("book-modals").innerHTML += htmlString;
         }
 
-        refreshProducts()
     </script>
 {% endblock meta %}
 
 {% block content %}
-    <nav class="navbar navbar-expand-lg bg-light bg-gradient">
+    <!-- NavBar -->
+    <nav class="navbar navbar-expand-lg bg-light bg-gradient fixed-top">
         <div class="container-fluid mx-5">
             <span class="navbar-brand mb-0 h1">PageTurner</span>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,7 +102,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active mb-0" href="#">My Books</a>
+                        <a class="nav-link active mb-0" href="{% url 'katalog_buku:show_katalog' %}">Catalogue</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active mb-0" href="{% url 'daftar_belanja:owned_books' %}">My Books</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active mb-0" href="{% url 'daftar_belanja:shopping_cart' %}">Shopping Cart</a>
@@ -74,34 +126,34 @@
         </div>
     </nav>
 
-    <div class="container-auto text-center mt-5">
-        <div class="book-cards" id="book-cards">
-            <div class="row gy-5 justify-content-center">
-                {% for book in books %}
-                    <div class="col-auto mx-3">
-                        <a style="text-decoration: none;" data-bs-toggle="modal" data-bs-target="#checkout{{ book.id }}">
-                            <div class="card" style="width: 18rem;">
-                                {% if book.image_url_l != null %}
-                                    <img src="{{ book.image_url_l }}" class="card-img-top" alt="..." style="width: 18rem; height: 350px;">
-                                {% elif book.image_url_m != null %}
-                                    <img src="{{ book.image_url_m }}" class="card-img-top" alt="..." style="width: 18rem; height: 350px;">
-                                {% elif book.image_url_s != null %}
-                                    <img src="{{ book.image_url_s }}" class="card-img-top" alt="..." style="width: 18rem; height: 350px;">
-                                {% else %}
-                                    <img src="https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/507/5055/no-image__76155.1665667859.jpg?c=2" class="card-img-top" alt="..." style="width: 18rem; height: 300px;">
-                                {% endif %}
-                                <div class="card-body">
-                                    <p class="card-text" style="font-family: 'LeagueSpartan Medium'; font-size: 1vw;">{{ book.book_title | truncatechars:25 }}</p>
-                                    <p class="card-text" style="font-family: 'LeagueSpartan Thin'; font-size: 1vw;">{{ book.book_author | truncatechars:25 }}</p>
-                                </div>
+    <!-- Book Cards -->
+    <div class="container-auto text-center mt-5" style="padding-top: 30px;">
+        <div class="row gy-5 justify-content-center" id="book-cards">
+            {% for book in books %}
+                <div class="col-auto mx-3">
+                    <a style="text-decoration: none;" data-bs-toggle="modal" data-bs-target="#checkout{{ book.id }}">
+                        <div class="card" style="width: 18rem;">
+                            {% if book.image_url_l != null %}
+                                <img src="{{ book.image_url_l }}" class="card-img-top" alt="..." style="width: 18rem; height: 350px;" id="card-image{{ book.id }}">
+                            {% elif book.image_url_m != null %}
+                                <img src="{{ book.image_url_m }}" class="card-img-top" alt="..." style="width: 18rem; height: 350px;" id="card-image{{ book.id }}">
+                            {% elif book.image_url_s != null %}
+                                <img src="{{ book.image_url_s }}" class="card-img-top" alt="..." style="width: 18rem; height: 350px;" id="card-image{{ book.id }}">
+                            {% else %}
+                                <img src="https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/507/5055/no-image__76155.1665667859.jpg?c=2" class="card-img-top" alt="..." style="width: 18rem; height: 300px;">
+                            {% endif %}
+                            <div class="card-body">
+                                <p class="card-text" style="font-family: 'LeagueSpartan Medium'; font-size: 1vw;">{{ book.book_title | truncatechars:25 }}</p>
+                                <p class="card-text" style="font-family: 'LeagueSpartan Thin'; font-size: 1vw;">{{ book.book_author | truncatechars:25 }}</p>
                             </div>
-                        </a>
-                    </div>
-                {% endfor %}
-            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
         </div>
     </div>
     
+    <!-- Add Book Modal -->
     <div class="modal fade" id="addbook" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -132,6 +184,10 @@
                             <label for="publisher" class="col-form-label">Publisher:</label>
                             <input type="text" class="form-control" id="publisher" name="publisher"></input>
                         </div>
+                        <div class="mb-4">
+                            <label for="image" class="col-form-label">Image URL:</label>
+                            <input type="text" class="form-control" id="image" name="image"></input>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -142,44 +198,47 @@
         </div>
     </div>
 
-    {% for book in books %}
-        <div class="modal fade" id="checkout{{ book.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5 me-5" id="exampleModalLabel" style="font-family: 'LeagueSpartan Medium';">{{ book.book_title | truncatechars:45 }}</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container text-center">
-                            <div class="row justify-content-center">
-                                <div class="col mb-3">
-                                    <img src="{{ book.image_url_l }}" class="img-fluid rounded" alt="...">
-                                </div>
-                            </div>
-
-                            <div class="row mb-3 justify-content-center text-center">
-                                <div class="col-mb-3">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="font-family: 'LeagueSpartan Thin';">{{ book.book_author }}</h1>
-                                </div>
-                            </div>
-
+    <!-- Books Modals -->
+    <div id="book-modals">
+        {% for book in books %}
+            <div class="modal fade" id="checkout{{ book.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 me-5" id="exampleModalLabel" style="font-family: 'LeagueSpartan Medium';">{{ book.book_title | truncatechars:45 }}</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Add to Wishlist</button>
-                        <a href="{% url 'katalog_buku:show_book' book.id %}">
-                            <button type="button" class="btn btn-outline-info px-4" data-bs-dismiss="modal">Book Details</button>
-                        </a>
-                        <a href="{% url 'daftar_belanja:add_to_cart' book.id %}">
-                            <button type="button" class="btn btn-outline-success px-4" data-bs-dismiss="modal">Add to Cart</button>
-                        </a>
+                        <div class="modal-body">
+                            <div class="container text-center">
+                                <div class="row justify-content-center">
+                                    <div class="col mb-3">
+                                        <img src="{{ book.image_url_l }}" class="img-fluid rounded" alt="...">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3 justify-content-center text-center">
+                                    <div class="col-mb-3">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel" style="font-family: 'LeagueSpartan Thin';">{{ book.book_author }}</h1>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Add to Wishlist</button>
+                            <a href="{% url 'katalog_buku:show_book' book.id %}">
+                                <button type="button" class="btn btn-outline-info px-4" data-bs-dismiss="modal">Book Details</button>
+                            </a>
+                            <a href="{% url 'daftar_belanja:add_to_cart' book.id %}">
+                                <button type="button" class="btn btn-outline-success px-4" data-bs-dismiss="modal">Add to Cart</button>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
-
+        {% endfor %}
+    </div>
+    
     <script>
         document.getElementById("button_add").onclick = addProduct
     </script>
