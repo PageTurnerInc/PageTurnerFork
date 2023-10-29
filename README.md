@@ -57,7 +57,7 @@ Dataset: https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset
 
 ## User Role
 | User            | Login Page | Book Catalogue | Shopping List | Library | Recommended Library | Review | Wishlist | 
-| --------------- | :-------: | :------------: | :-----------: | :-----: | :------------------: | :----: |  ------: |
+| --------------- | :-------: | :------------: | :-----------: | :-----: | :------------------: | :----: | :------: |
 | Guest           |     √     |       -        |       -       |    -    |          -           |   -    |    -    | 
 | Logged in User  |     -     |       √        |       √       |    √    |          -           |   √    |    -     | 
 | Premium Account |     -     |       √        |       √       |    √    |          √           |   √    |    √     |
