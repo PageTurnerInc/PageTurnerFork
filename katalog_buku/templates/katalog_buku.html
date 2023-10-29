@@ -113,6 +113,9 @@
                     <li class="nav-item">
                         <a class="nav-link active mb-0" href="{% url 'rak_buku:show_rak' %}">Rak Buku</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active mb-0" href="{% url 'wishlist:show_wishlist' %}">Wishlist</a>
+                    </li>
                 </ul>
             </div>
             <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addbook">Add New Book</button>
@@ -126,30 +129,31 @@
         </div>
     </nav>
 
-    <!-- Book Cards -->
-    <div class="container-auto text-center mt-5" style="padding-top: 30px;">
-        <div class="row gy-5 justify-content-center" id="book-cards">
-            {% for book in books %}
-                <div class="col-auto mx-3">
-                    <a style="text-decoration: none;" data-bs-toggle="modal" data-bs-target="#checkout{{ book.id }}">
-                        <div class="card" style="width: 18rem;">
-                            {% if book.image_url_l != null %}
-                                <img src="{{ book.image_url_l }}" class="card-img-top" alt="..." style="width: 18rem; height: 350px;" id="card-image{{ book.id }}">
-                            {% elif book.image_url_m != null %}
-                                <img src="{{ book.image_url_m }}" class="card-img-top" alt="..." style="width: 18rem; height: 350px;" id="card-image{{ book.id }}">
-                            {% elif book.image_url_s != null %}
-                                <img src="{{ book.image_url_s }}" class="card-img-top" alt="..." style="width: 18rem; height: 350px;" id="card-image{{ book.id }}">
-                            {% else %}
-                                <img src="https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/507/5055/no-image__76155.1665667859.jpg?c=2" class="card-img-top" alt="..." style="width: 18rem; height: 300px;">
-                            {% endif %}
-                            <div class="card-body">
-                                <p class="card-text" style="font-family: 'LeagueSpartan Medium'; font-size: 1vw;">{{ book.book_title | truncatechars:25 }}</p>
-                                <p class="card-text" style="font-family: 'LeagueSpartan Thin'; font-size: 1vw;">{{ book.book_author | truncatechars:25 }}</p>
+    <div class="container-auto text-center mt-5">
+        <div class="book-cards" id="book-cards">
+            <div class="row gy-5 justify-content-center">
+                {% for book in books %}
+                    <div class="col-auto mx-3">
+                        <a style="text-decoration: none;" data-bs-toggle="modal" data-bs-target="#checkout{{ book.id }}">
+                            <div class="card" style="width: 18rem;">
+                                {% if book.image_url_l != null %}
+                                    <img src="{{ book.image_url_l }}" class="card-img-top" alt="..." style="width: 18rem; height: 350px;">
+                                {% elif book.image_url_m != null %}
+                                    <img src="{{ book.image_url_m }}" class="card-img-top" alt="..." style="width: 18rem; height: 350px;">
+                                {% elif book.image_url_s != null %}
+                                    <img src="{{ book.image_url_s }}" class="card-img-top" alt="..." style="width: 18rem; height: 350px;">
+                                {% else %}
+                                    <img src="https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/507/5055/no-image__76155.1665667859.jpg?c=2" class="card-img-top" alt="..." style="width: 18rem; height: 300px;">
+                                {% endif %}
+                                <div class="card-body">
+                                    <p class="card-text" style="font-family: 'LeagueSpartan Medium'; font-size: 1vw;">{{ book.book_title | truncatechars:25 }}</p>
+                                    <p class="card-text" style="font-family: 'LeagueSpartan Thin'; font-size: 1vw;">{{ book.book_author | truncatechars:25 }}</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-            {% endfor %}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
     
@@ -222,23 +226,22 @@
                                     </div>
                                 </div>
 
-                            </div>
                         </div>
-                        <div class="modal-footer justify-content-center">
-                            <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Add to Wishlist</button>
-                            <a href="{% url 'katalog_buku:show_book' book.id %}">
-                                <button type="button" class="btn btn-outline-info px-4" data-bs-dismiss="modal">Book Details</button>
-                            </a>
-                            <a href="{% url 'daftar_belanja:add_to_cart' book.id %}">
-                                <button type="button" class="btn btn-outline-success px-4" data-bs-dismiss="modal">Add to Cart</button>
-                            </a>
-                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Add to Wishlist</button>
+                        <a href="{% url 'katalog_buku:show_book' book.id %}">
+                            <button type="button" class="btn btn-outline-info px-4" data-bs-dismiss="modal">Book Details</button>
+                        </a>
+                        <a href="{% url 'daftar_belanja:add_to_cart' book.id %}">
+                            <button type="button" class="btn btn-outline-success px-4" data-bs-dismiss="modal">Add to Cart</button>
+                        </a>
                     </div>
                 </div>
             </div>
-        {% endfor %}
-    </div>
-    
+        </div>
+    {% endfor %}
+
     <script>
         document.getElementById("button_add").onclick = addProduct
     </script>
