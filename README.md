@@ -19,27 +19,27 @@ Saat ini, tingkat kesadaran literasi masyarakat Indonesia masih memprihatinkan. 
 Kombinasi dari kurangnya ketertarikan karena salah pilih genre dan kendala aksesibilitas membentuk tantangan yang signifikan dalam upaya meningkatkan literasi. Inilah tempat dimana PageTurner dapat berperan. Dengan sistem rekomendasi buku yang cerdas, aplikasi ini dapat membantu masyarakat menemukan buku-buku yang sesuai dengan minat mereka, sehingga memotivasi mereka untuk membaca lebih banyak lagi. Selain itu, PageTurner menyediakan akses mudah ke berbagai jenis buku, mengatasi kendala aksesibilitas yang mungkin dihadapi oleh beberapa individu.
 
 ## Daftar Modul
-Dataset: https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset
+Dataset: https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset  
 
 - **Library (Salsa)**
 ###### Menampilkan halaman rak buku yang berisi buku-buku sesuai pilihan user
--- User dapat membuat library yang disukai
--- User dapat melihat library yang dibuat user lainnya
--- User dapat edit dan delete library
--- User dapat menambahkan buku ke dalam library melalui page Detail Book
+-- User dapat membuat library yang disukai <br />
+-- User dapat melihat library yang dibuat user lainnya <br />
+-- User dapat edit dan delete library <br />
+-- User dapat menambahkan buku ke dalam library melalui page Detail Book <br />
 
 - **Wishlist (Dinda)**
 ###### Menampilkan halaman yang berisi buku-buku yang ingin dibeli oleh user suatu saat nanti
--- User dapat menambahkan buku ke dalam wishlist melalui page Catalogue dan Detail Book
--- User dapat delete buku dalam wishlist
--- User dapat menambahkan dan melihat notes
+-- User dapat menambahkan buku ke dalam wishlist melalui page Catalogue dan Detail Book <br />
+-- User dapat delete buku dalam wishlist <br />
+-- User dapat menambahkan dan melihat notes <br />
 
 - **Review (Dimas)**
-###### Menampilkan ulasan seperti rate dan komen mengenai suatu buku
--- User dapat mengakses fitur review melalui page Detail Book
--- User dapat memberikan review bintang dan komentar suatu buku
--- User dapat edit dan delete review bintang dan komentar suatu buku
--- User dapat melihat rating bintang dan komentar user lainnya
+###### Menampilkan ulasan seperti rate dan komen mengenai suatu buku 
+-- User dapat mengakses fitur review melalui page Detail Book <br />
+-- User dapat memberikan review bintang dan komentar suatu buku <br />
+-- User dapat edit dan delete review bintang dan komentar suatu buku <br />
+-- User dapat melihat rating bintang dan komentar user lainnya <br />
 
 - **Book Catalogue (Austin)**
 ###### Halaman yang menampilkan detail buku dengan informasi seperti judul, penulis, sampul buku, ISBN, tahun, penerbit
@@ -56,8 +56,8 @@ Dataset: https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset
 
 
 ## User Role
-| User            | Login Page | Book Catalogue | Shopping List | Library | Recommended Library | Review | Wishlist | <br />
-| --------------- | :-------: | :------------: | :-----------: | :-----: | :------------------: | :----: | :------: | <br />
-| Guest           |     √     |                |               |         |                      |        |          | <br />
-| Logged in User  |           |       √        |       √       |    √    |                      |   √    |          | <br />
-| Premium Account |           |       √        |       √       |    √    |          √           |   √    |    √     | <br />
+| User            | Login Page | Book Catalogue | Shopping List | Library | Recommended Library | Review | Wishlist | 
+| --------------- | :-------: | :------------: | :-----------: | :-----: | :------------------: | :----: |  ------: |
+| Guest           |     √     |       -        |       -       |    -    |          -           |   -    |    -    | 
+| Logged in User  |     -     |       √        |       √       |    √    |          -           |   √    |    -     | 
+| Premium Account |     -     |       √        |       √       |    √    |          √           |   √    |    √     |
