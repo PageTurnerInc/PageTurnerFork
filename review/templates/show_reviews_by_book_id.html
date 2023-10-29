@@ -59,12 +59,18 @@
 <div class="container-fluid bg-secondary py-4 bg-gradient" style="min-height: 70px;">
     <div class="mx-5">
         <div class="pb-4">
-            <button onclick="history.back();" class="btn btn-outline-warning">
+            <a class="btn btn-outline-warning" href="{% url 'katalog_buku:show_book' book.id %}">
                 <h6 class="text-white" style="display: inline;">
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     Back
                 </h6>
-            </button>
+            </a>
+            <!-- <button onclick="history.back();" class="btn btn-outline-warning">
+                <h6 class="text-white" style="display: inline;">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    Back
+                </h6>
+            </button> -->
         </div>
 
         <div class="d-flex">

@@ -18,7 +18,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active mb-0" href="#">My Books</a>
+                    <a class="nav-link active mb-0" href="{% url 'katalog_buku:show_katalog' %}">Catalogue</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active mb-0" href="{% url 'daftar_belanja:owned_books' %}">My Books</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active mb-0" href="{% url 'daftar_belanja:shopping_cart' %}">Shopping Cart</a>
