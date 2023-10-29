@@ -61,6 +61,9 @@
                     <li class="nav-item">
                         <a class="nav-link active mb-0" href="{% url 'rak_buku:show_rak' %}">Rak Buku</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active mb-0" href="{% url 'wishlist:show_wishlist' %}">Wishlist</a>
+                    </li>
                 </ul>
             </div>
             <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addbook">Add New Book</button>
@@ -75,8 +78,8 @@
     </nav>
 
     <div class="container-auto text-center mt-5">
-        <div class="book-cards" id="book-cards">
-            <div class="row gy-5 justify-content-center">
+        <div class="book-cards">
+            <div class="row gy-5 justify-content-center" id="book-cards">
                 {% for book in books %}
                     <div class="col-auto mx-3">
                         <a style="text-decoration: none;" data-bs-toggle="modal" data-bs-target="#checkout{{ book.id }}">
@@ -167,7 +170,10 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Add to Wishlist</button>
+                        <form method="POST" action="{% url 'wishlist:add_to_wishlist' book.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Add to Wishlist</button>
+                        </form>
                         <a href="{% url 'katalog_buku:show_book' book.id %}">
                             <button type="button" class="btn btn-outline-info px-4" data-bs-dismiss="modal">Book Details</button>
                         </a>
