@@ -13,6 +13,15 @@
         background-attachment: fixed;
         background-size: cover;
     }
+    @font-face {
+                font-family: 'LeagueSpartan Medium';
+                src: url("{% static 'font/LeagueSpartan-Medium.ttf' %}");
+            }
+
+    @font-face {
+        font-family: 'LeagueSpartan Thin';
+        src: url("{% static 'font/LeagueSpartan-Thin.ttf' %}");
+    }
 </style>
 <nav class="navbar navbar-expand-lg bg-light bg-gradient fixed-top">
     <div class="container-fluid mx-5">
@@ -32,7 +41,10 @@
                     <a class="nav-link active mb-0" href="{% url 'daftar_belanja:shopping_cart' %}">Shopping Cart</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active mb-0" href="{% url 'rak_buku:show_rak' %}">Rak Buku</a>
+                    <a class="nav-link active mb-0" href="{% url 'rak_buku:show_rak' %}">Library</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active mb-0" href="{% url 'wishlist:show_wishlist' %}">Wishlist</a>
                 </li>
             </ul>
         </div>
