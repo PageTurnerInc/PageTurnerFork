@@ -229,7 +229,10 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Add to Wishlist</button>
+                        <form method="POST" action="{% url 'wishlist:add_to_wishlist' book.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Add to Wishlist</button>
+                        </form>
                         <a href="{% url 'katalog_buku:show_book' book.id %}">
                             <button type="button" class="btn btn-outline-info px-4" data-bs-dismiss="modal">Book Details</button>
                         </a>
