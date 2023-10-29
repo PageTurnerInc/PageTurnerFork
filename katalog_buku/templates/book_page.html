@@ -77,7 +77,7 @@
                         <ul class="dropdown-menu">
                             {% for rak in user_rak %}
                                 <li>
-                                    <a href="{% url 'katalog_buku:add_book_to_rak' id=book.pk rak_id=rak.pk %}">
+                                    <a href="{% url 'katalog_buku:add_book_to_rak' id=book.pk rak_id=rak.pk %}" style="text-decoration: none; color: inherit">
                                         <button type="button" class="dropdown-item button_add">{{ rak.name }}</button>
                                     </a>
                                 </li>
