@@ -22,7 +22,8 @@ urlpatterns = [
     path('wishlist/', include('wishlist.urls')),
     path('', include('main.urls')),
     path("api/books/", include("book.urls")),
-    path("rak_buku/", include("rak_buku.urls")),
-    path('katalog/', include("katalog_buku.urls")),
+    path("review/", include("review.urls")),
     path('daftar_belanja/', include('daftar_belanja.urls')),
-    ]
+    path('katalog/', include("katalog_buku.urls")),
+    path("rak_buku/", include("rak_buku.urls")),
+]

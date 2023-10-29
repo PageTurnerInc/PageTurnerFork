@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'main',
     'book',
     'isbn_field',
+    'review',
     'rak_buku',
     'daftar_belanja',
     'katalog_buku',
