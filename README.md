@@ -43,21 +43,21 @@ Dataset: https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset
 
 - **Book Catalogue (Austin)**
 ###### Halaman yang menampilkan detail buku dengan informasi seperti judul, penulis, sampul buku, ISBN, tahun, penerbit
--- User dapat menambahkan buku ke page Catalogue
--- User dapat delete buku yang telah ditambahkan ke katalog buku melalui page Detail Book
--- User dapat mengakses fitur menambahkan buku ke library, shopping cart, wishlist, review, delete buku
+-- User dapat menambahkan buku ke page Catalogue <br />
+-- User dapat delete buku yang telah ditambahkan ke katalog buku melalui page Detail Book <br />
+-- User dapat mengakses fitur menambahkan buku ke library, shopping cart, wishlist, review, delete buku <br />
 
 - **Shopping Cart (Najmi)**
 ###### Menampilkan dan mengelola isi keranjang belanja sebelum melakukan pembayaran
--- User dapat menambahkan buku ke shopping cart melalui page Catalogue dan Detail Book
--- User dapat delete buku dalam shopping cart
--- User dapat mengakses fitur detail buku dalam shopping cart
--- User dapat checkout shopping cart dengan autentikasi username
+-- User dapat menambahkan buku ke shopping cart melalui page Catalogue dan Detail Book <br />
+-- User dapat delete buku dalam shopping cart <br />
+-- User dapat mengakses fitur detail buku dalam shopping cart <br />
+-- User dapat checkout shopping cart dengan autentikasi username <br />
 
 
 ## User Role
-| User | Login Page|Book Catalogue|Shopping List|Library|Recommended Library|Review|Wishlist|
-| ------------ | ------------ |
-|Guest           |  √ |   ||||||
-|Logged in User||√|√|√||√||
-|Premium Account||√|√|√|√|√|√|
+| User            | Login Page | Book Catalogue | Shopping List | Library | Recommended Library | Review | Wishlist | <br />
+| --------------- | :-------: | :------------: | :-----------: | :-----: | :------------------: | :----: | :------: | <br />
+| Guest           |     √     |                |               |         |                      |        |          | <br />
+| Logged in User  |           |       √        |       √       |    √    |                      |   √    |          | <br />
+| Premium Account |           |       √        |       √       |    √    |          √           |   √    |    √     | <br />
