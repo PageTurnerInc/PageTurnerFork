@@ -14,7 +14,7 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     reviewer = models.TextField()
-    comment = models.TextField()
+    comment = models.TextField(blank=True)
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     date = models.DateTimeField()
 
