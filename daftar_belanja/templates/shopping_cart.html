@@ -3,29 +3,40 @@
 
 {% block meta %}
     <title>Shopping Cart - PageTurner</title>
-    <style>
-        #image {
-            background: linear-gradient( rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.85) ), url(https://media.cntraveler.com/photos/5e73a851a32d290008f50901/16:9/w_2580,c_limit/Tianjin%20Binhai%20Library%20cr%20Ossip%20van%20Duivenbode.jpg);
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
-            height: 50vh;
-        }
-
-        #heading-2 {
-            font-family: 'LeagueSpartan Thin';
-            letter-spacing: 3px;
-            font-size: 2vw;
-        }
-
-        .navbar-nav .nav-item a:hover {
-            color: blue;
-        }
-    </style>
 {% endblock meta %}
 
 {% block content %}
+
+<style>
+    #image {
+        background: linear-gradient( rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.85) ), url(https://media.cntraveler.com/photos/5e73a851a32d290008f50901/16:9/w_2580,c_limit/Tianjin%20Binhai%20Library%20cr%20Ossip%20van%20Duivenbode.jpg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        height: 50vh;
+    }
+
+    #heading-2 {
+        font-family: 'LeagueSpartan Thin';
+        letter-spacing: 3px;
+        font-size: 2vw;
+    }
+
+    .navbar-nav .nav-item a:hover {
+        color: blue;
+    }
+
+    @font-face {
+                font-family: 'LeagueSpartan Medium';
+                src: url("{% static 'font/LeagueSpartan-Medium.ttf' %}");
+            }
+
+    @font-face {
+        font-family: 'LeagueSpartan Thin';
+        src: url("{% static 'font/LeagueSpartan-Thin.ttf' %}");
+    }
+</style>
 
 <nav class="navbar navbar-expand-lg bg-light bg-gradient fixed-top">
     <div class="container-fluid mx-5">

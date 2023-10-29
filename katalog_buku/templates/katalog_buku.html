@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block meta %}
     <title>Catalogue - PageTurner</title>
@@ -6,6 +7,16 @@
     <style>
         .navbar-nav .nav-item a:hover {
             color: blue;
+        }
+
+        @font-face {
+            font-family: 'LeagueSpartan Medium';
+            src: url("{% static 'font/LeagueSpartan-Medium.ttf' %}");
+        }
+
+        @font-face {
+            font-family: 'LeagueSpartan Thin';
+            src: url("{% static 'font/LeagueSpartan-Thin.ttf' %}");
         }
     </style>
 
@@ -92,6 +103,7 @@
 {% endblock meta %}
 
 {% block content %}
+
     <!-- NavBar -->
     <nav class="navbar navbar-expand-lg bg-light bg-gradient fixed-top">
         <div class="container-fluid mx-5">
@@ -129,7 +141,7 @@
         </div>
     </nav>
 
-    <div class="container-auto text-center mt-5">
+    <div class="container-auto text-center mt-5" style="padding-top: 30px;">
         <div class="book-cards" id="book-cards">
             <div class="row gy-5 justify-content-center">
                 {% for book in books %}
