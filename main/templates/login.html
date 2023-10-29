@@ -19,6 +19,10 @@
             font-size: 2vw;
         }
 
+        .navbar-nav .nav-item a:hover {
+            color: blue;
+        }
+
         /* html,body {
             width: 100%;
             height: 100%;
@@ -26,12 +30,11 @@
             padding: 0px;
             overflow-x: hidden; 
         } */
-
     </style>
 {% endblock meta %}
 
 {% block content %}
-    <nav class="navbar navbar-expand-lg bg-light bg-gradient">
+    <nav class="navbar navbar-expand-lg bg-light bg-gradient fixed-top">
         <div class="container-fluid mx-5">
             <span class="navbar-brand mb-0 h1">PageTurner</span>
 
@@ -142,11 +145,11 @@
                     <div class="card-body">
                         <form method="POST" action="">
                             {% csrf_token %}
-                            <div class="mb-3">
+                            <div class="mb-4">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="username" name="username">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-4">
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" name="password">
                             </div>
