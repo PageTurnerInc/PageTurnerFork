@@ -102,30 +102,6 @@
     </div>
 </div>
 
-{% if no_books %}
-
-<div class="row align-items-center justify-content-center" style="height: 50vh;">
-    <div class="col-6">
-        <div class="row text-center" style="padding-bottom: 10px;">
-            <h1 class="display-1 text-dark my-0" style="font-family: 'LeagueSpartan Medium'; letter-spacing: 3px; font-size: 3vw;">
-                Your don't have any books in your collection...
-            </h1>
-        </div>
-        <div class="row text-center" style="padding-bottom: 20px;">
-            <h1 class="display-1 text-dark my-0" id="heading-2">
-                Check out our extensive catalogue!
-            </h1>
-        </div>
-        <div class="row text-center">
-            <a class="btn btn-success btn-lg" href="{% url 'katalog_buku:show_katalog' %}" role="button" style="width: 68%; margin: auto auto;">
-                Catalogue
-            </a>
-        </div>
-    </div>
-</div>
-
-{% endif %}
-
 <div class="container-auto text-center mt-5" style="padding-bottom: 50px;">
     <div class="book-cards">
         <div class="row gy-5 justify-content-center" id="book-cards"></div>
@@ -144,15 +120,17 @@
         bookCatalogue.innerHTML = "";
 
         let htmlString = ``;
-
+        let totalBooks = 0;
         books.forEach((item) => {
+            const bookTitles = item.fields.book_title.slice(0, 43) + "...";
+            totalBooks += 1;
             htmlString += `
                 <div class="col-auto mx-3">
                     <a style="text-decoration: none;" data-bs-toggle="modal" data-bs-target="#checkout${item.pk}">
                         <div class="card" style="width: 18rem; height: 30rem; box-shadow: 0px 10px 5px 0px rgba(0, 0, 0, 0.3);">
                             <img src="${ item.fields.image_url_l }" class="card-img-top" alt="..." style="width: 18rem; height: 350px;">
                             <div class="card-body">
-                                <p class="card-text" style="font-family: 'LeagueSpartan Medium'; font-size: 1vw;">${item.fields.book_title}</p>
+                                <p class="card-text" style="font-family: 'LeagueSpartan Medium'; font-size: 1vw;">${bookTitles}</p>
                                 <p class="card-text" style="font-family: 'LeagueSpartan Thin'; font-size: 1vw;">${item.fields.book_author}</p>
                             </div>
                         </div>
@@ -164,7 +142,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5 me-5" id="exampleModalLabel" style="font-family: 'LeagueSpartan Medium';">${item.fields.book_title}</h1>
+                                <h1 class="modal-title fs-5 me-5" id="exampleModalLabel" style="font-family: 'LeagueSpartan Medium';">${bookTitles}</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -194,6 +172,30 @@
                 </div>
             `
         })
+
+        if (totalBooks == 0) {
+            htmlString += `
+            <div class="row align-items-center justify-content-center" style="height: 50vh;">
+                <div class="col-6">
+                    <div class="row text-center" style="padding-bottom: 10px;">
+                        <h1 class="display-1 text-dark my-0" style="font-family: 'LeagueSpartan Medium'; letter-spacing: 3px; font-size: 3vw;">
+                            Your don't have any books in your collection...
+                        </h1>
+                    </div>
+                    <div class="row text-center" style="padding-bottom: 20px;">
+                        <h1 class="display-1 text-dark my-0" id="heading-2">
+                            Check out our extensive catalogue!
+                        </h1>
+                    </div>
+                    <div class="row text-center">
+                        <a class="btn btn-success btn-lg" href="/katalog/" role="button" style="width: 68%; margin: auto auto;">
+                            Catalogue
+                        </a>
+                    </div>
+                </div>
+            </div>
+            `
+        }
         bookCatalogue.innerHTML = htmlString;
     }
 
