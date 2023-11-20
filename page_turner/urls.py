@@ -26,4 +26,5 @@ urlpatterns = [
     path('daftar_belanja/', include('daftar_belanja.urls')),
     path('katalog/', include("katalog_buku.urls")),
     path("rak_buku/", include("rak_buku.urls")),
+    path('auth/', include('authentication.urls')),
 ]
