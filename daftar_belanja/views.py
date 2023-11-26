@@ -48,9 +48,9 @@ def owned_books(request):
 
     return render(request, 'owned_books.html', context)
 
-def get_cart_json(request):
-    data = ShoppingCart.objects.all()
-    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+# def get_cart_json(request):
+#     data = ShoppingCart.objects.all()
+#     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def get_shopping_cart(request):
     account = Account.objects.get(user=request.user)

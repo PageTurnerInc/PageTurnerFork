@@ -7,5 +7,5 @@ urlpatterns = [
     path('', login_user, name='login_user'),
     path('logout/', logout_user, name='logout_user'),
     path('create_account/', create_account, name='create_account'),
-    path('get_accounts/', get_accounts_json, name='get_accounts_json'),
+    # path('get_accounts/', get_accounts_json, name='get_accounts_json'),
 ]
