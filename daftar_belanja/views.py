@@ -60,7 +60,7 @@ def get_shopping_cart(request):
 def get_owned_books(request):
     account = Account.objects.get(user=request.user)
     cart = ShoppingCart.objects.get(account=account)
-    return HttpResponse(serializers.serialize('json', cart.owned_books.all()))
+    return HttpResponse(serializers.serialize('json', cart.owned_books.all()), content_type="application/json")
 
 def add_to_cart(request, id):
     account = Account.objects.get(user=request.user)
