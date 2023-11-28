@@ -12,3 +12,5 @@ class Book(models.Model):
     image_url_m = models.TextField(null=True, blank=True)
     image_url_l = models.TextField(null=True, blank=True)
     user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+
+    
