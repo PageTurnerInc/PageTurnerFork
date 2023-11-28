@@ -72,3 +72,7 @@ def add_book_to_rak(request, id, rak_id):
     rak.books.add(book)
 
     return HttpResponseRedirect(reverse('katalog_buku:show_book', args=[id]))
+
+def show_json(request):
+    data = Book.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")

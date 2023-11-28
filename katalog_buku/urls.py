@@ -1,5 +1,5 @@
 from django.urls import path
-from katalog_buku.views import show_katalog, show_book_page, add_book_katalog, get_product_json, delete_book_katalog, add_book_to_rak
+from katalog_buku.views import show_katalog, show_book_page, add_book_katalog, get_product_json, delete_book_katalog, add_book_to_rak, show_json
 
 app_name = 'katalog_buku'
 
@@ -10,5 +10,5 @@ urlpatterns = [
     path('delete-book-katalog/<int:id>', delete_book_katalog, name='delete_book_katalog'),
     path('get-product/', get_product_json, name='get_product_json'),
     path('book/<int:id>/<int:rak_id>/', add_book_to_rak, name='add_book_to_rak'),
-
+    path('json/', show_json, name='show_json'),
 ]
