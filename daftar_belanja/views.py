@@ -54,13 +54,19 @@ def owned_books(request):
 
 def get_shopping_cart(request):
     account = Account.objects.get(user=request.user)
-    cart = ShoppingCart.objects.get(account=account)
-    return HttpResponse(serializers.serialize('json', cart.cart.all()), content_type="application/json")
+    try:
+        cart = ShoppingCart.objects.get(account=account)
+        return HttpResponse(serializers.serialize('json', cart.cart.all()), content_type="application/json")
+    except ShoppingCart.DoesNotExist:
+        return HttpResponse(serializers.serialize('json', []), content_type="application/json")
 
 def get_owned_books(request):
     account = Account.objects.get(user=request.user)
-    cart = ShoppingCart.objects.get(account=account)
-    return HttpResponse(serializers.serialize('json', cart.owned_books.all()), content_type="application/json")
+    try:
+        cart = ShoppingCart.objects.get(account=account)
+        return HttpResponse(serializers.serialize('json', cart.owned_books.all()), content_type="application/json")
+    except ShoppingCart.DoesNotExist:
+        return HttpResponse(serializers.serialize('json', []), content_type="application/json")
 
 def add_to_cart(request, id):
     account = Account.objects.get(user=request.user)
