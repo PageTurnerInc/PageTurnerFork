@@ -8,6 +8,9 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse
+import json
+from django.core.serializers import serialize
 
 
 # Create your views here.
@@ -43,8 +46,20 @@ def get_rak_json(request):
     user_rak = Rak.objects.filter(user=user)  # Filter Rak objects by the associated Account
     return HttpResponse(serializers.serialize('json', user_rak))
 
+def get_book_json_by_id(request, id):
+    rak = Rak.objects.get(pk=id)
+    books = rak.books.all()
+
+    # Serialize the queryset directly
+    json_data = serialize('json', books)
+
+    return HttpResponse(json_data, content_type='application/json')
 def get_rak_json_by_id(request, id):
     rak = Rak.objects.filter(pk=id)  # Filter Rak objects by the associated Account
+    return HttpResponse(serializers.serialize('json', rak))
+
+def get_rak_json_all(request):
+    rak = Rak.objects.all() # Filter Rak objects by the associated Account
     return HttpResponse(serializers.serialize('json', rak))
 
 @csrf_exempt
