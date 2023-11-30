@@ -98,3 +98,20 @@ def show_notes(request):
 def get_notes(request):
     notes = Notes.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize('json', notes))
+
+@csrf_exempt
+def add_notes_flutter(request):
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
+
+        new_note = Notes.objects.create(
+            user = request.user,
+            notes = data["notes"]
+        )
+
+        new_note.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
