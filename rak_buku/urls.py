@@ -13,6 +13,9 @@ urlpatterns = [
     path('delete-rak/<int:id>/', delete_rak, name='delete_rak'),
     path('create-ajax/', add_rak_ajax, name='add_rak_ajax'),
 
-    path('delete-book/<int:rak_id>/<int:book_id>/', delete_book, name='delete_book')
+    path('get-rak/<int:id>/list-book', get_book_json_by_id, name='get_book_json_by_id'),
+    path('delete-book/<int:rak_id>/<int:book_id>/', delete_book, name='delete_book'),
+
+    path('get-rak/flutter', get_rak_json_all, name='get_rak_json_all'),
 
 ]
