@@ -117,3 +117,18 @@ def add_notes_flutter(request):
         return JsonResponse({"status": "success"}, status=200)
     else:
         return JsonResponse({"status": "error"}, status=401)
+
+
+@csrf_exempt 
+def delete_book_flutter(request, book_id):
+    if request.method == 'DELETE':
+        book = get_object_or_404(Book, id=book_id)
+
+        try:
+            wishlist_item = Wishlist.objects.get(user=request.user, books=book)
+            wishlist_item.delete()
+            return JsonResponse({"status": "success"}, status=200)
+        except Wishlist.DoesNotExist:
+            return JsonResponse({"status": "error", "message": "Book not found in wishlist"}, status=404)
+    else:
+        return JsonResponse({"status": "error", "message": "Invalid request method"}, status=405)
