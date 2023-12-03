@@ -150,8 +150,11 @@ def add_to_wishlist_flutter(request):
 
 # masih error :((((((
 @csrf_exempt 
-def delete_book_flutter(request, book_id):
+def delete_book_flutter(request):
     if request.method == 'POST':
+        
+        data = json.loads(request.body)
+        book_id = data.get('bookID')
         book = get_object_or_404(Book, id=book_id)
 
         try:
