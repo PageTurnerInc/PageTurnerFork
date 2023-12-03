@@ -115,6 +115,10 @@
                 <form id="form" onsubmit="return false;">
                     {% csrf_token %}
                     <div class="mb-3">
+                        <label for="title" class="col-form-label">Title:</label>
+                        <input type="text" class="form-control" id="title" name="title">
+                    </div>
+                    <div class="mb-3">
                         <label for="notes" class="col-form-label">Notes:</label>
                         <textarea class="form-control" id="notes" name="notes"></textarea>
                     </div>

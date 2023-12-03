@@ -77,9 +77,10 @@ def get_wishlist_items(request):
 
 def add_notes(request):
     if request.method == 'POST':
+        title = request.POST.get("title")
         notes = request.POST.get("notes")
         user = request.user
-        new = Notes(notes=notes,user=user)
+        new = Notes(title=title,notes=notes,user=user)
         new.save()
     return HttpResponseRedirect(reverse("wishlist:show_notes"))
 
@@ -107,6 +108,7 @@ def add_notes_flutter(request):
 
         new_note = Notes.objects.create(
             user = request.user,
+            title = data["title"],
             notes = data["notes"]
         )
 

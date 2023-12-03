@@ -9,6 +9,7 @@ class Wishlist(models.Model):
     books = models.ForeignKey(Book, on_delete=models.CASCADE)
 
 class Notes(models.Model):
+    title = models.CharField(max_length=200)
     notes = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
