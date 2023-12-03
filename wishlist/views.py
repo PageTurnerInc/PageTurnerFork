@@ -77,9 +77,10 @@ def get_wishlist_items(request):
 
 def add_notes(request):
     if request.method == 'POST':
+        title = request.POST.get("title")
         notes = request.POST.get("notes")
         user = request.user
-        new = Notes(notes=notes,user=user)
+        new = Notes(title=title,notes=notes,user=user)
         new.save()
     return HttpResponseRedirect(reverse("wishlist:show_notes"))
 
@@ -98,3 +99,69 @@ def show_notes(request):
 def get_notes(request):
     notes = Notes.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize('json', notes))
+
+@csrf_exempt
+def add_notes_flutter(request):
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
+
+        new_note = Notes.objects.create(
+            user = request.user,
+            title = data["title"],
+            notes = data["notes"]
+        )
+
+        new_note.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+
+
+@csrf_exempt
+def add_to_wishlist_flutter(request):
+    if request.method == 'POST':
+        user = request.user
+        try:
+            account = Account.objects.get(user=user)
+            is_premium = account.get_is_premium()
+            if not is_premium:
+                return JsonResponse({"status": "error", "message": "Anda harus menjadi pengguna premium untuk menambahkan item ke wishlist."}, status=403)
+        except Account.DoesNotExist:
+            pass
+
+        data = json.loads(request.body)
+        book_id = data.get('bookID')
+
+        if book_id is not None:
+            book = get_object_or_404(Book, id=book_id)
+            try:
+                wish_book = Wishlist.objects.get(user=request.user, books=book)
+                if wish_book:
+                    wish_book.save()
+            except Wishlist.DoesNotExist:
+                Wishlist.objects.create(user=request.user, books=book)
+            return JsonResponse({"status": "success"}, status=200)
+        else:
+            return JsonResponse({"status": "error", "message": "Invalid book ID"}, status=400)
+
+
+
+# masih error :((((((
+@csrf_exempt 
+def delete_book_flutter(request):
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
+        book_id = data.get('bookID')
+        book = get_object_or_404(Book, id=book_id)
+
+        try:
+            wishlist_item = Wishlist.objects.get(user=request.user, books=book)
+            wishlist_item.delete()
+            return JsonResponse({"status": "success"}, status=200)
+        except Wishlist.DoesNotExist:
+            return JsonResponse({"status": "error", "message": "Book not found in wishlist"}, status=404)
+    else:
+        return JsonResponse({"status": "error", "message": "Invalid request method"}, status=405)

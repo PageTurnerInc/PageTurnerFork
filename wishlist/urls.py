@@ -1,5 +1,5 @@
 from django.urls import path
-from wishlist.views import add_to_wishlist,  show_wishlist,  delete_book, get_wishlist_items, add_notes, show_notes,get_notes
+from wishlist.views import add_notes_flutter, add_to_wishlist, add_to_wishlist_flutter, delete_book_flutter,  show_wishlist,  delete_book, get_wishlist_items, add_notes, show_notes,get_notes
 
 app_name = 'wishlist'
 
@@ -11,5 +11,10 @@ urlpatterns = [
     path('add_notes/', add_notes, name='add_notes'),
     path('show_notes/', show_notes, name='show_notes'),
     path('get_notes/', get_notes, name='get_notes'),
+    path('add_notes_flutter/', add_notes_flutter, name='add_notes_flutter'),
+    path('delete_book_flutter/', delete_book_flutter, name='delete_book_flutter'),
+    path('add_to_wishlist_flutter/', add_to_wishlist_flutter, name='add_to_wishlist_flutter'),
+
+
     
 ]
