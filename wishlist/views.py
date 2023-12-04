@@ -100,6 +100,12 @@ def get_notes(request):
     notes = Notes.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize('json', notes))
 
+
+def delete_note(request, note_id):
+    note = get_object_or_404(Notes, id=note_id, user=request.user)
+    note.delete()
+    return HttpResponseRedirect(reverse("wishlist:show_notes"))
+
 @csrf_exempt
 def add_notes_flutter(request):
     if request.method == 'POST':
@@ -163,5 +169,18 @@ def delete_book_flutter(request):
             return JsonResponse({"status": "success"}, status=200)
         except Wishlist.DoesNotExist:
             return JsonResponse({"status": "error", "message": "Book not found in wishlist"}, status=404)
+    else:
+        return JsonResponse({"status": "error", "message": "Invalid request method"}, status=405)
+
+
+@csrf_exempt
+def delete_note_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        note_id = data.get('noteID')
+        note = get_object_or_404(Notes, id=note_id, user=request.user)
+
+        note.delete()
+        return JsonResponse({"status": "success"}, status=200)
     else:
         return JsonResponse({"status": "error", "message": "Invalid request method"}, status=405)
