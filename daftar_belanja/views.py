@@ -91,6 +91,20 @@ def add_to_cart_ajax(request):
     return HttpResponseNotFound()
 
 @csrf_exempt
+def add_to_cart_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        bookID = data["bookID"]
+        account = Account.objects.get(user=request.user)
+        cart, created = ShoppingCart.objects.get_or_create(account=account)
+        book = Book.objects.get(pk=bookID)
+        cart.cart.add(book)
+
+        return JsonResponse({"status": True,}, status=200)
+    
+    return JsonResponse({"status": False}, status=500)
+
+@csrf_exempt
 def remove_from_cart_ajax(request):
     if request.method == 'DELETE':
         pk = json.loads(request.body).get('pk')
@@ -101,6 +115,19 @@ def remove_from_cart_ajax(request):
         return HttpResponse(b"DELETED", 201)
 
     return HttpResponseNotFound()
+
+@csrf_exempt
+def remove_from_cart_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        bookID = data["bookID"]
+        account = Account.objects.get(user=request.user)
+        cart, created = ShoppingCart.objects.get_or_create(account=account)
+        book = Book.objects.get(pk=bookID)
+        cart.cart.remove(book)
+        return JsonResponse({"status": True,}, status=200)
+    
+    return JsonResponse({"status": False}, status=500)
 
 @csrf_exempt
 def delete_book_ajax(request):
@@ -115,16 +142,29 @@ def delete_book_ajax(request):
     return HttpResponseNotFound()
 
 @csrf_exempt
+def delete_book_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        bookID = data["bookID"]
+        user = request.user
+        account = Account.objects.get(user=user)
+        cart, created = ShoppingCart.objects.get_or_create(account=account)
+        book = Book.objects.get(pk=bookID)
+        cart.owned_books.remove(book)
+        return JsonResponse({"status": True,}, status=200)
+    
+    return JsonResponse({"status": False}, status=500)
+
+@csrf_exempt
 def confirm_payment(request):
     if request.method == 'POST':
         receiver = User.objects.get(username = request.POST.get("receiver"))
-        # account = Account.objects.get(full_name = request.POST.get("receiver"))
         giver = Account.objects.get(user = request.user)
         account = Account.objects.get(user = receiver)
         receiver_cart, created = ShoppingCart.objects.get_or_create(account=account)
         giver_cart, created = ShoppingCart.objects.get_or_create(account=giver)
         for book in receiver_cart.cart.all():
-            # if book not in receiver_cart.owned_books.all():
             receiver_cart.owned_books.add(book)
 
         giver_cart.cart.clear()
@@ -132,6 +172,33 @@ def confirm_payment(request):
         return HttpResponse(b"CREATED", status=201)
     
     return HttpResponseNotFound()
+
+@csrf_exempt
+def confirm_payment_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        receiverName = data["username"]
+        payment = data["payment"]
+
+        receiver = User.objects.get(username = receiverName)
+        giver = Account.objects.get(user = request.user)
+        account = Account.objects.get(user = receiver)
+        receiver_cart, created = ShoppingCart.objects.get_or_create(account=account)
+        giver_cart, created = ShoppingCart.objects.get_or_create(account=giver)
+        for book in receiver_cart.cart.all():
+            receiver_cart.owned_books.add(book)
+
+        giver_cart.cart.clear()
+        
+        return JsonResponse({
+            "status": True,
+            "message": "Payment with {payment} is Successful!",
+        }, status=200)
+    
+    return JsonResponse({
+        "status": False,
+        "message": "Something went wrong, try again!",
+    }, status=500)
 
 @csrf_exempt
 def check_book_ownership(request):
